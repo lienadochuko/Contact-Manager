@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestProject1
 {
-    internal class MyMath
+    internal class CountryServiceTest
     {
-        public int Add(int x, int y)
-        {
-            int c = x + y;
-            return c;
-        }
     }
 }
