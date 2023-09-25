@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ServiceContracts;
+using Entities;
+using ServiceContracts.DTO;
+using System;
 
 namespace TestProject1
 {
-    internal class CountryServiceTest
+    public class CountryServiceTest
     {
+        private readonly ICountriesService _countriesService;
     }
 }
