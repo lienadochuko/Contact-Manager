@@ -88,17 +88,54 @@ namespace TestProject1
             //Act
             CountryResponse response = _countriesService.AddCountry(request);
 
+            List<CountryResponse> countries_from_GetAllCountries = _countriesService.GetAllCountries();
+
             //Assert
             Assert.True(response.CountryID != Guid.Empty);
+            Assert.Contains(response, countries_from_GetAllCountries);
         }
         #endregion
 
         #region GetAllCountries
         [Fact]
-        //The list should be empty by default
+        //The list should be empty by default(before adding any countries)
         public void GetAllCountries_EmptyList()
         {
+            //Acts
+            List<CountryResponse> actual_country_response_list = _countriesService.GetAllCountries();
 
+            //Assert
+            Assert.Empty(actual_country_response_list);
+        }
+
+        [Fact]
+
+        public void GetAllCountry_AddFewCountries()
+        {
+            //Arrange
+            List<CountryAddRequest> country_request_list = new List<CountryAddRequest>()
+            {
+                new CountryAddRequest(){ CountryName = "USA"},
+                new CountryAddRequest(){ CountryName = "SINGAPORE"},
+                new CountryAddRequest(){ CountryName = "ALGERIA"}
+            };
+
+            //Act
+            List<CountryResponse> countries_list_from_add_country = new List<CountryResponse>();
+
+            foreach (CountryAddRequest country_request in country_request_list)
+            {
+                countries_list_from_add_country.Add(_countriesService.AddCountry(country_request));
+            }
+
+           List<CountryResponse> actualCountryResponse = _countriesService.GetAllCountries();
+
+
+            //Assert
+            foreach(CountryResponse expected_country in countries_list_from_add_country)
+            {
+                Assert.Contains(expected_country, actualCountryResponse);
+            }
         }
 
         #endregion
