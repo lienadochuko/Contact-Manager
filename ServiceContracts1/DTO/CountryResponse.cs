@@ -26,6 +26,11 @@ namespace ServiceContracts.DTO
             return this.CountryID == country_to_comapare.CountryID && 
                 this.CountryName == country_to_comapare.CountryName;
         }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public static class CountryExtensions
