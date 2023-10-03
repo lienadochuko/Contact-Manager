@@ -7,7 +7,7 @@ namespace Entities
         /// <summary>
         /// Person domain Model class
         /// </summary>
-        public Guid? PersonID { get; set; }
+        public Guid PersonID { get; set; }
         public string? PersonName { get; set; }
         public string? Email { get; set; }
         public DateTime? DOB { get; set; }

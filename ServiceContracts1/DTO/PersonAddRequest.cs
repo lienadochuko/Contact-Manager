@@ -14,6 +14,12 @@ namespace ServiceContracts.DTO
         public Guid? CountryID { get; set; }
         public bool RecieveNewsLetter { get; set; }
 
+        /// <summary>
+        /// converts the current object of PersonAddRequest 
+        /// into a new object of Person type
+        /// </summary>
+        /// <returns></returns>
+
         public Person ToPerson()
         {
             return new Person()
