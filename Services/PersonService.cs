@@ -2,6 +2,7 @@
 using Entities;
 using ServiceContracts.DTO;
 using ServiceContracts;
+using System.ComponentModel.DataAnnotations;
 
 namespace Services
 {
@@ -9,7 +10,23 @@ namespace Services
     {
         //private field
         private readonly List<Person> _persons;
-       private readonly ICountriesService _countries;
+       private readonly ICountriesService _countriesService;
+
+        public PersonService()
+        {
+            _persons = new List<Person>();
+            _countriesService = new CountriesService();
+        }
+
+        //convert the Person object into PersonResponse type
+        private PersonResponse ConvertPersonResponse(Person person)
+        {
+            PersonResponse personResponse = person.ToPersonResponse();
+            personResponse.Country = _countriesService.
+                GetCountryByCountryID(personResponse.CountryID)?.CountryName;
+
+            return personResponse;
+        }
 
         public PersonResponse AddPerson(PersonAddRequest? personAddRequest)
         {
@@ -20,9 +37,14 @@ namespace Services
             }
 
             //Validate PersonName
-            if (personAddRequest.PersonName == null)
+            ValidationContext validationContext = new ValidationContext(personAddRequest);
+            List<ValidationResult> validationResults = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(
+                personAddRequest, validationContext, validationResults, true);
+            if (!isValid)
             {
-                throw new ArgumentException(nameof(personAddRequest.PersonName));
+                throw new ArgumentException(validationResults.FirstOrDefault()?.ErrorMessage);
             }
 
             //Convert personAddRequest into Person type
@@ -35,9 +57,7 @@ namespace Services
             _persons.Add(person);
 
             //convert the Person object into PersonResponse type
-            PersonResponse personResponse = person.ToPersonResponse();
-
-            personResponse.Country = ff..
+         return ConvertPersonResponse(person);
         }
 
         public List<PersonResponse> GetAllPersons()

@@ -1,15 +1,22 @@
 ﻿using System;
 using ServiceContracts.Enums;
 using Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO
 {
     public class PersonAddRequest
     {
+        [Required(ErrorMessage = "Person Name can't be blank")]
         public string? PersonName { get; set; }
+        [Required(ErrorMessage = "Email can't be left blank")]
+        [EmailAddress(ErrorMessage = "Please provide a valid email address")]
         public string? Email { get; set; }
+        [Required(ErrorMessage = "Date of birth can't be left blank")]
         public DateTime? DOB { get; set; }
+        [Required(ErrorMessage = "Select your gender please")]
         public GenderOptions? Gender { get; set; }
+        [Required(ErrorMessage = "Please provide a valid Home/Office address")]
         public string? Address { get; set; }
         public Guid? CountryID { get; set; }
         public bool RecieveNewsLetter { get; set; }
