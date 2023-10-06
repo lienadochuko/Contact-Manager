@@ -2,7 +2,7 @@
 using Entities;
 using ServiceContracts.DTO;
 using ServiceContracts;
-using System.ComponentModel.DataAnnotations;
+using Services.Helpers;
 
 namespace Services
 {
@@ -36,16 +36,9 @@ namespace Services
                 throw new ArgumentNullException(nameof(personAddRequest));
             }
 
-            //Validate PersonName
-            ValidationContext validationContext = new ValidationContext(personAddRequest);
-            List<ValidationResult> validationResults = new List<ValidationResult>();
+            //Model Validate PersonName
+            ValidationHelper.ModelValidation(personAddRequest);
 
-            bool isValid = Validator.TryValidateObject(
-                personAddRequest, validationContext, validationResults, true);
-            if (!isValid)
-            {
-                throw new ArgumentException(validationResults.FirstOrDefault()?.ErrorMessage);
-            }
 
             //Convert personAddRequest into Person type
            Person person = personAddRequest.ToPerson();
@@ -63,6 +56,19 @@ namespace Services
         public List<PersonResponse> GetAllPersons()
         {
             throw new NotImplementedException();
+        }
+
+        public PersonResponse? GetPersonByPersonID(Guid? personID)
+        {
+            if (personID == null)
+                return null;
+
+           Person? person = _persons.FirstOrDefault(temp => temp.PersonID == personID);
+            if(person == null)
+                return null;
+
+
+            return person.ToPersonResponse();
         }
     }
 }
