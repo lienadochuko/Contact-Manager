@@ -53,6 +53,20 @@ namespace ServiceContracts.DTO
             throw new NotImplementedException();
         }
 
+        public override string? ToString()
+        {
+            return $"PersonID: {PersonID}, \n" +
+                $"Name: {PersonName},\n" +
+                $"Email: {Email}, \n" +
+                $"Date of Birth: {DOB}, \n" +
+                $"Gender: {Gender}, \n" +
+                $"Age: {Age}, \n" +
+                $"Address: {Address}, \n" +
+                $"CountryID: {CountryID}, \n" +
+                $"Country: {Country}, \n" +
+                $"RecieveNewsLetter: {RecieveNewsLetter} \n";
+        }
+
 
     }
     public static class PersonExtension
