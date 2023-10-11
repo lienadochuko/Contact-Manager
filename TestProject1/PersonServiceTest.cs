@@ -7,6 +7,7 @@ using ServiceContracts.Enums;
 using Services;
 using Xunit.Abstractions;
 using Entities;
+using System.Linq;
 
 namespace TestProject1
 {
@@ -515,7 +516,8 @@ namespace TestProject1
     
 
         #region GetSortedPersons
-
+        //when we sort based on the person name in DESC order
+        //,it should return person list in descending order on PersonName
         [Fact]
         public void GetSortedPersons()
         {  
@@ -530,9 +532,6 @@ namespace TestProject1
                 person_reponse_list_from_add.Add(person_response);
             }
 
-
-
-
             //print both the expected and actual value
             _testOutputHelper.WriteLine("Expected");
             foreach (PersonResponse person_response_from_add in person_reponse_list_from_add)
@@ -540,28 +539,25 @@ namespace TestProject1
                 _testOutputHelper.WriteLine(person_response_from_add.ToString());
             }
 
+            List<PersonResponse> allPersons = _personService.GetAllPersons();
+
             //Act
-            List<PersonResponse> person_list_from_search =
-                 _personService.GetFilteredPersons(nameof(Person.PersonName), "a");
+            List<PersonResponse> person_list_from_sort =
+                 _personService.GetSortedPersons(allPersons ,nameof(Person.PersonName), SortOrderOptions.DESC);
 
 
             _testOutputHelper.WriteLine("Actual");
-            foreach (PersonResponse person_response_from_add in person_list_from_search)
+            foreach (PersonResponse person_response_from_add in person_list_from_sort)
             {
                 _testOutputHelper.WriteLine(person_response_from_add.ToString());
             }
 
+            person_reponse_list_from_add = person_reponse_list_from_add.OrderByDescending(temp => temp.PersonName).ToList();
+
             //Assert
-            foreach (PersonResponse person_response_from_add in person_reponse_list_from_add)
+            for(int i = 0; i < person_reponse_list_from_add.Count; i++)
             {
-                if (person_response_from_add.PersonName != null)
-                {
-                    if (person_response_from_add.PersonName.Contains("a",
-                    StringComparison.OrdinalIgnoreCase))
-                    {
-                        Assert.Contains(person_response_from_add, person_list_from_search);
-                    }
-                }
+                Assert.Equal(person_reponse_list_from_add[i], person_list_from_sort[i]);
             }
         }
         #endregion
