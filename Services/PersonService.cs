@@ -132,7 +132,8 @@ namespace Services
             return matchingPerson;
         }
 
-        public List<PersonResponse> GetSortedPersons(List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrderOptions)
+        public List<PersonResponse> GetSortedPersons
+            (List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrderOptions)
         {
             throw new NotImplementedException();
         }

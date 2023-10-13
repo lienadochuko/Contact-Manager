@@ -542,8 +542,9 @@ namespace TestProject1
             List<PersonResponse> allPersons = _personService.GetAllPersons();
 
             //Act
-            List<PersonResponse> person_list_from_sort =
-                 _personService.GetSortedPersons(allPersons ,nameof(Person.PersonName), SortOrderOptions.DESC);
+            List<PersonResponse> person_list_from_sort = 
+                _personService.GetSortedPersons(allPersons ,
+                nameof(Person.PersonName), SortOrderOptions.DESC);
 
 
             _testOutputHelper.WriteLine("Actual");
