@@ -548,12 +548,13 @@ namespace TestProject1
 
 
             _testOutputHelper.WriteLine("Actual");
-            foreach (PersonResponse person_response_from_add in person_list_from_sort)
+            foreach (PersonResponse person_response_from_get in person_list_from_sort)
             {
-                _testOutputHelper.WriteLine(person_response_from_add.ToString());
+                _testOutputHelper.WriteLine(person_response_from_get.ToString());
             }
 
-            person_reponse_list_from_add = person_reponse_list_from_add.OrderByDescending(temp => temp.PersonName).ToList();
+            person_reponse_list_from_add = person_reponse_list_from_add.
+                OrderByDescending(temp => temp.PersonName).ToList();
 
             //Assert
             for(int i = 0; i < person_reponse_list_from_add.Count; i++)
