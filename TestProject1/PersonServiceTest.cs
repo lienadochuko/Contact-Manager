@@ -563,5 +563,11 @@ namespace TestProject1
             }
         }
         #endregion
+
+
+        #region UpdatePerson
+        //when we supply null as PersonUpdateRequest, it should throw ArgumentNullException
+
+        #endregion
     }
 }
