@@ -106,10 +106,10 @@ namespace TestProject1
             return personAdd_request.ToList();
         }
 
-    #region AddPerson
-    //when we supply a null value as PersonAddRequest,
-    //it should throw ArgumentNullException
-    [Fact]
+        #region AddPerson
+        //when we supply a null value as PersonAddRequest,
+        //it should throw ArgumentNullException
+        [Fact]
         public void AddPerson_NullPerson()
         {
             //Arrange
@@ -435,7 +435,7 @@ namespace TestProject1
                 person_reponse_list_from_add.Add(person_response);
             }
 
-           
+
 
             //print both the expected and actual value
             _testOutputHelper.WriteLine("Expected");
@@ -443,7 +443,7 @@ namespace TestProject1
             {
                 _testOutputHelper.WriteLine(person_response_from_add.ToString());
             }
-            
+
             //Act
             List<PersonResponse> person_list_from_search =
                  _personService.GetFilteredPersons(nameof(Person.PersonName), "");
@@ -477,8 +477,8 @@ namespace TestProject1
                 person_reponse_list_from_add.Add(person_response);
             }
 
-           
-            
+
+
 
             //print both the expected and actual value
             _testOutputHelper.WriteLine("Expected");
@@ -486,7 +486,7 @@ namespace TestProject1
             {
                 _testOutputHelper.WriteLine(person_response_from_add.ToString());
             }
-            
+
             //Act
             List<PersonResponse> person_list_from_search =
                  _personService.GetFilteredPersons(nameof(Person.PersonName), "a");
@@ -503,7 +503,7 @@ namespace TestProject1
             {
                 if (person_response_from_add.PersonName != null)
                 {
-                    if (person_response_from_add.PersonName.Contains( "a",
+                    if (person_response_from_add.PersonName.Contains("a",
                     StringComparison.OrdinalIgnoreCase))
                     {
                         Assert.Contains(person_response_from_add, person_list_from_search);
@@ -513,16 +513,16 @@ namespace TestProject1
         }
         #endregion'
 
-    
+
 
         #region GetSortedPersons
         //when we sort based on the person name in DESC order
         //,it should return person list in descending order on PersonName
         [Fact]
         public void GetSortedPersons()
-        {  
+        {
             //Arrange
-           List<PersonAddRequest> personAdd_request = CreatePersons();
+            List<PersonAddRequest> personAdd_request = CreatePersons();
 
             List<PersonResponse> person_reponse_list_from_add = new List<PersonResponse>();
 
@@ -542,8 +542,8 @@ namespace TestProject1
             List<PersonResponse> allPersons = _personService.GetAllPersons();
 
             //Act
-            List<PersonResponse> person_list_from_sort = 
-                _personService.GetSortedPersons(allPersons ,
+            List<PersonResponse> person_list_from_sort =
+                _personService.GetSortedPersons(allPersons,
                 nameof(Person.PersonName), SortOrderOptions.DESC);
 
 
@@ -557,7 +557,7 @@ namespace TestProject1
                 OrderByDescending(temp => temp.PersonName).ToList();
 
             //Assert
-            for(int i = 0; i < person_reponse_list_from_add.Count; i++)
+            for (int i = 0; i < person_reponse_list_from_add.Count; i++)
             {
                 Assert.Equal(person_reponse_list_from_add[i], person_list_from_sort[i]);
             }
@@ -567,7 +567,91 @@ namespace TestProject1
 
         #region UpdatePerson
         //when we supply null as PersonUpdateRequest, it should throw ArgumentNullException
+        [Fact]
+        public void UpdatePerson_NullPerson()
+        {
+            //Arrange
+            PersonUpdateRequest? person_update_request = null;
 
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(() => {
+                //Act
+                _personService.UpdatePerson(person_update_request);
+            });
+        }
+
+        [Fact]
+        //when invalid PersonID is supplied it should throw ArgumentExceptionError
+        public void UpdatePerson_InvalidPersonID()
+        {
+            //Arrange
+            PersonUpdateRequest? person_update_request = new PersonUpdateRequest()
+            {
+                PersonID = Guid.NewGuid()
+            };
+
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => {
+                //Act
+                _personService.UpdatePerson(person_update_request);
+            });
+        }
+
+        [Fact]
+        //when invalid PersonName is null it should throw ArgumentException
+        public void UpdatePerson_NullPersonName()
+        {
+
+            //Arrange
+
+            CountryAddRequest countryAddRequest = new CountryAddRequest()
+            {
+                CountryName = "Morocco"
+            };
+
+            CountryResponse country_response = _countriesService.AddCountry(countryAddRequest);
+
+
+            PersonAddRequest personAddRequest = new PersonAddRequest()
+            {
+                PersonName = "Boli",
+                CountryID = country_response.CountryID,
+
+            };
+            PersonResponse person_reponse_from_add = _personService.AddPerson(personAddRequest);
+
+            PersonUpdateRequest person_update_reuqest = person_reponse_from_add.ToPersonUpdateRequest();
+            person_update_reuqest.PersonName = null;
+
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _personService.UpdatePerson(person_update_reuqest);
+            });
+        }
+
+
+        [Fact]
+        //when invalid PersonName is null it should throw ArgumentException
+        public void UpdatePerson_NullPersonName()
+        {
+            //Arrange
+            PersonUpdateRequest? person_update_request = new PersonUpdateRequest()
+            {
+                PersonID = Guid.NewGuid()
+            };
+
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => {
+                //Act
+                _personService.UpdatePerson(person_update_request);
+            });
+        }
         #endregion
     }
 }
