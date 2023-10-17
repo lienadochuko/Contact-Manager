@@ -601,7 +601,42 @@ namespace TestProject1
 
         [Fact]
         //when invalid PersonName is null it should throw ArgumentException
-        public void UpdatePerson_NullPersonName()
+        public void UpdatePerson_PersonNameIsNull()
+        {
+
+            //Arrange
+
+            CountryAddRequest countryAddRequest = new CountryAddRequest()
+            {
+                CountryName = "Morocco"
+            };
+
+            CountryResponse country_response = _countriesService.AddCountry(countryAddRequest);
+
+
+            PersonAddRequest personAddRequest = new PersonAddRequest()
+            {
+                PersonName = "Boli",
+                CountryID = country_response.CountryID,
+
+            };
+            PersonResponse person_reponse_from_add = _personService.AddPerson(personAddRequest);
+
+            PersonUpdateRequest person_update_reuqest = person_reponse_from_add.ToPersonUpdateRequest();
+            person_update_reuqest.PersonName = null;
+
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _personService.UpdatePerson(person_update_reuqest);
+            });
+        }
+
+        [Fact]
+        //when invalid PersonName is null it should throw ArgumentException
+        public void UpdatePerson_PersonFullDetailsUpdate()
         {
 
             //Arrange
@@ -635,23 +670,6 @@ namespace TestProject1
         }
 
 
-        [Fact]
-        //when invalid PersonName is null it should throw ArgumentException
-        public void UpdatePerson_NullPersonName()
-        {
-            //Arrange
-            PersonUpdateRequest? person_update_request = new PersonUpdateRequest()
-            {
-                PersonID = Guid.NewGuid()
-            };
-
-
-            //Assert
-            Assert.Throws<ArgumentException>(() => {
-                //Act
-                _personService.UpdatePerson(person_update_request);
-            });
-        }
         #endregion
     }
 }
