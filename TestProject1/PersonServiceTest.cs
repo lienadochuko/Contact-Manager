@@ -617,6 +617,10 @@ namespace TestProject1
             PersonAddRequest personAddRequest = new PersonAddRequest()
             {
                 PersonName = "Boli",
+                Email = "boli.me@gmail.com",
+                Address = "bolivar street, lampshire, England",
+                Gender = GenderOptions.Male,
+                DOB = DateTime.Parse("2000-01-09"),
                 CountryID = country_response.CountryID,
 
             };
@@ -640,7 +644,6 @@ namespace TestProject1
         {
 
             //Arrange
-
             CountryAddRequest countryAddRequest = new CountryAddRequest()
             {
                 CountryName = "Morocco"
@@ -652,24 +655,87 @@ namespace TestProject1
             PersonAddRequest personAddRequest = new PersonAddRequest()
             {
                 PersonName = "Boli",
+                Email = "boli.me@gmail.com",
+                Address = "bolivar street, lampshire, England",
+                Gender = GenderOptions.Male,
+                DOB = DateTime.Parse("2000-01-09"),
+                CountryID = country_response.CountryID,
+                RecieveNewsLetter = true,
+
+            };
+
+
+            PersonResponse person_reponse_from_add = _personService.AddPerson(personAddRequest);
+
+            _testOutputHelper.WriteLine("Origanal");
+            _testOutputHelper.WriteLine(person_reponse_from_add.ToString());
+
+            PersonUpdateRequest person_update_request = person_reponse_from_add.ToPersonUpdateRequest();
+            person_update_request.PersonName = "Bolivar";
+            person_update_request.Email = "bolivar.me@gmail.com";
+
+            //Act
+            PersonResponse person_reponse_from_update = _personService.UpdatePerson(person_update_request);
+            _testOutputHelper.WriteLine("Actual");
+           _testOutputHelper.WriteLine(person_reponse_from_update.ToString());
+
+            PersonResponse? person_response_from_getPerson =  _personService.GetPersonByPersonID(person_update_request.PersonID);
+            _testOutputHelper.WriteLine("Expected");
+            _testOutputHelper.WriteLine(person_response_from_getPerson?.ToString());
+
+
+            //Assert
+            Assert.Equal(person_response_from_getPerson, person_reponse_from_update);
+        }
+
+
+        #endregion
+
+
+        #region DeletPerson
+
+        //when an valid PersonID is supplied it should return true
+        [Fact]
+        public void DeletePerson_ValidPerson()
+        {
+            //Arrange
+            CountryAddRequest countryAddRequest = new CountryAddRequest()
+            {
+                CountryName = "England"
+            };
+
+            CountryResponse country_response = _countriesService.AddCountry(countryAddRequest);
+
+
+            PersonAddRequest personAddRequest = new PersonAddRequest()
+            {
+                PersonName = "Boli",
+                Email = "boli.me@gmail.com",
+                Address = "bolivar street, lampshire, England",
+                Gender = GenderOptions.Male,
+                DOB = DateTime.Parse("2000-01-09"),
                 CountryID = country_response.CountryID,
 
             };
             PersonResponse person_reponse_from_add = _personService.AddPerson(personAddRequest);
 
-            PersonUpdateRequest person_update_reuqest = person_reponse_from_add.ToPersonUpdateRequest();
-            person_update_reuqest.PersonName = null;
-
+            //Act
+            bool isDeleted = _personService.DeletePerson(person_reponse_from_add.PersonID);
 
             //Assert
-            Assert.Throws<ArgumentException>(() =>
-            {
-                //Act
-                _personService.UpdatePerson(person_update_reuqest);
-            });
+            Assert.True(isDeleted);
         }
 
+        //when an invalid PersonID is supplied it should return false
+        [Fact]
+        public void DeletePerson_InvalidPerson()
+        {            
+            //Act
+            bool isDeleted = _personService.DeletePerson(Guid.NewGuid());
 
+            //Assert
+            Assert.False(isDeleted);
+        }
         #endregion
     }
 }

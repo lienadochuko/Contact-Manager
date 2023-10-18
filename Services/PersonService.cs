@@ -193,7 +193,50 @@ namespace Services
 
         public PersonResponse UpdatePerson(PersonUpdateRequest? personUpdateRequest)
         {
-            throw new NotImplementedException();
+            if (personUpdateRequest == null)
+                throw new ArgumentNullException(nameof(Person));
+
+            //validation
+            ValidationHelper.ModelValidation(personUpdateRequest);
+
+
+            if (personUpdateRequest.PersonID == new Guid())
+                throw new ArgumentException(nameof(personUpdateRequest.PersonID));
+                
+            
+            Person? matchingPerson = _persons.FirstOrDefault(temp => temp.PersonID == personUpdateRequest.PersonID);
+            if (matchingPerson == null)
+            {
+                throw new ArgumentException("Given person id doesn't exist");
+            }
+
+            //update all details
+            matchingPerson.PersonName = personUpdateRequest.PersonName;
+            matchingPerson.Email = personUpdateRequest.Email;
+            matchingPerson.DOB = personUpdateRequest.DOB;
+            matchingPerson.Address = personUpdateRequest.Address;
+            matchingPerson.Gender = personUpdateRequest.Gender.ToString();
+            matchingPerson.CountryID = personUpdateRequest.CountryID;
+            matchingPerson.RecieveNewsLetter = personUpdateRequest.RecieveNewsLetter;
+
+            return matchingPerson.ToPersonResponse();
+        }
+
+        public bool DeletePerson(Guid? personID)
+        {
+            if (personID == null)
+                throw new ArgumentNullException(nameof(personID));
+
+
+            Person? matchingPerson = _persons.FirstOrDefault(temp => temp.PersonID == personID);
+            if (matchingPerson == null)
+            {
+                return false;
+            }
+
+            _persons.RemoveAll(temp => temp.PersonID == personID);
+
+            return true;
         }
     }
 }
