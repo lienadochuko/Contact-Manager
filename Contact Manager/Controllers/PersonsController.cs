@@ -22,6 +22,15 @@ namespace Contact_Manager.Controllers
         [Route("/")]
         public IActionResult Index()
         {
+            ViewBag.SearchFields = new Dictionary<string, string>()
+            {
+                {nameof(PersonResponse.PersonName), "Person Name"},
+                {nameof(PersonResponse.Email), "Email"},
+                {nameof(PersonResponse.DOB), "Date of Birth"},
+                {nameof(PersonResponse.Gender), "Gender"},
+                {nameof(PersonResponse.Address), "Address"},
+                {nameof(PersonResponse.CountryID), "Country"}
+            };
             List<PersonResponse> person = _personServices.GetAllPersons();
             return View(person);
         }

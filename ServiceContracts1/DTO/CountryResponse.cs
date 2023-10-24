@@ -12,7 +12,7 @@ namespace ServiceContracts.DTO
 
         public string? CountryName { get; set; }
 
-
+         
         //It compares the current oject to another object of
         //CountryResponse type and returns true if both values are same otherwiase returns false
         public override bool Equals(object? obj)

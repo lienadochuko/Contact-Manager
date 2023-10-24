@@ -105,7 +105,7 @@ namespace Services
                     Address = "84 Barnett Avenue",
                     Gender = "Female",
                     DOB = DateTime.Parse("1993-07-15"),
-                    CountryID = Guid.Parse("E801E3C0-7835-4760-9E0B-27078011A2E"),
+                    CountryID = Guid.Parse("E801E3C0-7835-4760-9E0B-27078011A2E5"),
                     RecieveNewsLetter = true,
                 });
                 _persons.Add(new Person()

@@ -6,4 +6,50 @@
 
 <h1>Persons</h1>
 
-<table class=""></table>
+
+<div class="box flex">
+    <div class="flex-1">
+        <select class="form-input">
+            @foreach (var field in ViewBag.SearchFields)
+            {
+                <option value="@field.Key">@field.Value</option>
+            }
+        </select>
+    </div>
+    <div class="flex-1">
+        <input type="search" id="Search" class="form-input" placeholder="Search"/>
+    </div>
+    <div class="flex-1">
+        <button class="button button-blue-back">Search</button>
+        <a href="~/person/index" class="link-hover">Clear all</a>
+    </div>
+</div>
+<table class="table w-100- mt">
+    <thead>
+        <tr>
+            <th>Person Name</th>
+            <th>Email</th>
+            <th>DOB</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Address</th>
+            <th>Country</th>
+            <th>Recieve News Letters</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PersonResponse person in Model)
+        {
+            <tr>
+                <td>@person.PersonName</td>
+                <td>@person.Email</td>
+                <td>@person.DOB?.ToString("dd-MMM-yyyy")</td>
+                <td>@person.Age</td>
+                <td>@person.Gender</td>
+                <td>@person.Address</td>
+                <td>@person.Country</td>
+                <td>@person.RecieveNewsLetter</td>
+            </tr>
+        }
+    </tbody>
+</table>
