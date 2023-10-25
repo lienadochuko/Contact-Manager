@@ -20,7 +20,7 @@ namespace Contact_Manager.Controllers
 
         [Route("persons/index")]
         [Route("/")]
-        public IActionResult Index()
+        public IActionResult Index(string searchBy, string? searchString)
         {
             ViewBag.SearchFields = new Dictionary<string, string>()
             {
@@ -31,7 +31,7 @@ namespace Contact_Manager.Controllers
                 {nameof(PersonResponse.Address), "Address"},
                 {nameof(PersonResponse.CountryID), "Country"}
             };
-            List<PersonResponse> person = _personServices.GetAllPersons();
+            List<PersonResponse> person = _personServices.GetFilteredPersons(searchBy, searchString);
             return View(person);
         }
     }

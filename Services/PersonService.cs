@@ -229,13 +229,13 @@ namespace Services
 
             switch(searchBy)
             {
-                case nameof(Person.PersonName): matchingPerson = allPersons.Where(temp =>
+                case nameof(PersonResponse.PersonName): matchingPerson = allPersons.Where(temp =>
                 (!string.IsNullOrEmpty(temp.PersonName)? temp.PersonName.Contains(
                     searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
 
                     break;
 
-                case nameof(Person.Email):
+                case nameof(PersonResponse.Email):
                     matchingPerson = allPersons.Where(temp =>
             (!string.IsNullOrEmpty(temp.Email) ? temp.Email.Contains(
                 searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
@@ -243,7 +243,7 @@ namespace Services
                     break;
 
 
-                case nameof(Person.DOB):
+                case nameof(PersonResponse.DOB):
                     matchingPerson = allPersons.Where(temp =>
                     (temp.DOB != null) ?
                     (temp.DOB.Value.ToString("dd MMMM yyyy").Contains(
@@ -252,14 +252,14 @@ namespace Services
                     break;
 
 
-                case nameof(Person.Gender):
+                case nameof(PersonResponse.Gender):
                     matchingPerson = allPersons.Where(temp =>
             (!string.IsNullOrEmpty(temp.Gender) ? temp.Gender.Contains(
                 searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
 
                     break;
 
-                case nameof(Person.CountryID):
+                case nameof(PersonResponse.CountryID):
                     matchingPerson = allPersons.Where(temp =>
             (!string.IsNullOrEmpty(temp.Country) ? temp.Country.Contains(
                 searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
@@ -267,7 +267,7 @@ namespace Services
                     break;
 
 
-                case nameof(Person.Address):
+                case nameof(PersonResponse.Address):
                     matchingPerson = allPersons.Where(temp =>
             (!string.IsNullOrEmpty(temp.Address) ? temp.Address.Contains(
                 searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
