@@ -32,6 +32,8 @@ namespace Contact_Manager.Controllers
                 {nameof(PersonResponse.CountryID), "Country"}
             };
             List<PersonResponse> person = _personServices.GetFilteredPersons(searchBy, searchString);
+            ViewBag.CurrentSearchBy = searchBy;
+            ViewBag.CurrentSearchString = searchString;
             return View(person);
         }
     }
