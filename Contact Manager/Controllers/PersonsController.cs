@@ -9,7 +9,7 @@ namespace Contact_Manager.Controllers
     {
         //private fields
         private readonly IPersonServices _personServices;
-        private readonly ICountriesService _countriesService;
+        //private readonly ICountriesService _countriesService;
 
         //contructor
         public PersonsController(IPersonServices personServices, ICountriesService countriesService)
@@ -31,10 +31,10 @@ namespace Contact_Manager.Controllers
                 {nameof(PersonResponse.Address), "Address"},
                 {nameof(PersonResponse.CountryID), "Country"}
             };
-            List<PersonResponse> person = _personServices.GetFilteredPersons(searchBy, searchString);
+            List<PersonResponse> persons = _personServices.GetFilteredPersons(searchBy, searchString);
             ViewBag.CurrentSearchBy = searchBy;
             ViewBag.CurrentSearchString = searchString;
-            return View(person);
+            return View(persons);
         }
     }
 }
