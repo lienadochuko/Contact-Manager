@@ -38,9 +38,9 @@ namespace Contact_Manager.Controllers
 
             //Sort
             List<PersonResponse> sortedPerson = _personServices.GetSortedPersons(persons, sortBy, sortOrderOptions);
-            ViewBag.CurrentSortBy = sortBy;
-            ViewBag.CurrentSortOrderOptions = sortOrderOptions;
-            return View(persons);
+            ViewBag.CurrentSortBy = sortBy.ToString();
+            ViewBag.CurrentSortOrderOptions = sortOrderOptions.ToString();
+            return View(sortedPerson);
         }
     }
 }
