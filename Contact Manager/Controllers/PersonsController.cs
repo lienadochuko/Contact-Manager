@@ -42,5 +42,13 @@ namespace Contact_Manager.Controllers
             ViewBag.CurrentSortOrderOptions = sortOrderOptions.ToString();
             return View(sortedPerson);
         }
+
+
+        [Route("persons/create")]
+        [HttpGet] //indicates that the action recieves only get requests
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

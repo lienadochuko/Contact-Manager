@@ -10,7 +10,7 @@ namespace ServiceContracts.DTO
         /// <summary>
         /// Acts as a DTO for inserting new person
         /// </summary>
-        
+         
         [Required(ErrorMessage = "Person Name can't be blank")]
         public string? PersonName { get; set; }
         [Required(ErrorMessage = "Email can't be left blank")]

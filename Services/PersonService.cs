@@ -203,7 +203,7 @@ namespace Services
 
         public List<PersonResponse> GetAllPersons()
         {
-            return _persons.Select(person => person.ToPersonResponse()).ToList();
+            return _persons.Select(person => ConvertPersonResponse(person)).ToList();
         }
 
         public PersonResponse? GetPersonByPersonID(Guid? personID)
@@ -216,7 +216,7 @@ namespace Services
                 return null;
 
 
-            return person.ToPersonResponse();
+            return ConvertPersonResponse(person);
         }
 
         public List<PersonResponse> GetFilteredPersons(string searchBy, string? searchString)
@@ -366,7 +366,7 @@ namespace Services
             matchingPerson.CountryID = personUpdateRequest.CountryID;
             matchingPerson.RecieveNewsLetter = personUpdateRequest.RecieveNewsLetter;
 
-            return matchingPerson.ToPersonResponse();
+            return ConvertPersonResponse(matchingPerson);
         }
 
         public bool DeletePerson(Guid? personID)
