@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            @*DOB*@
+            @*Gender*@
             <div class="form-field flex">
                 <div class="w-25">
                     <label for="Gender" class="form-label pt">Gender</label>
@@ -62,7 +62,13 @@
                     <label for="CountryID" class="form-label pt">Country</label>
                 </div>
                 <div class="flex-1">
-                    <select class="form-input"></select>
+                    <select name="CountryID" id="CountryID" class="form-input">
+                        <option value="">please select</option>
+                        @foreach(CountryResponse country in ViewBag.Countries)
+                        {
+                            <option value="@country.CountryID">@country.CountryName.ToString().ToLower()</option>
+                        }
+                    </select>
                 </div>
             </div>
 
@@ -76,7 +82,36 @@
                 </div>
             </div>
 
-            <button>Submit</button>
+
+            @*Recieve NewsLetter*@
+            <div class="form-field flex">
+                <div class="w-25">
+                </div>
+                <div class="flex-1">
+                    <input type="checkbox" id="RecieveNewsLetter" name="RecieveNewsLetter" value="true" />
+                    <label for="RecieveNewsLetter"  class="form-label">Recieve News Letters </label>
+                </div>
+            </div>
+
+            @*Submit*@
+            <div class="form-field flex">
+                <div class="w-25">
+                </div>
+                <div class="flex-1">
+                    <button class="button button-green-back">Create</button>
+                    @if (ViewBag.Errors != null)
+                    {
+                        <div class="text-red ml">
+                           <ul>
+                                @foreach (string error in ViewBag.Errors)
+                                {
+                                    <li class="ml">@error</li>
+                                }
+                           </ul>
+                        </div>
+                    }
+                </div>
+            </div>
         </form>
     </div>
 </div>

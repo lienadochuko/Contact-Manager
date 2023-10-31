@@ -79,7 +79,7 @@ namespace Services
                 new Country()
                 {
                     CountryID = Guid.Parse("C3EE9030-141F-4B92-B1AC-DF45A84A9046"),
-                    CountryName = "ALGERIA"
+                    CountryName = "BELGIUM"
                 }
             });
             }
