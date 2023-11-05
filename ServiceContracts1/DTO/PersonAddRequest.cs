@@ -13,16 +13,25 @@ namespace ServiceContracts.DTO
          
         [Required(ErrorMessage = "Person Name can't be blank")]
         public string? PersonName { get; set; }
+
         [Required(ErrorMessage = "Email can't be left blank")]
         [EmailAddress(ErrorMessage = "Please provide a valid email address")]
+        [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
+
         [Required(ErrorMessage = "Date of birth can't be left blank")]
+        [DataType(DataType.Date)]
         public DateTime? DOB { get; set; }
+
         [Required(ErrorMessage = "Select your gender please")]
         public GenderOptions? Gender { get; set; }
+
         [Required(ErrorMessage = "Please provide a valid Home/Office address")]
         public string? Address { get; set; }
+
+        [Required(ErrorMessage = "Select your Country please")]
         public Guid? CountryID { get; set; }
+
         public bool RecieveNewsLetter { get; set; }
 
         /// <summary>

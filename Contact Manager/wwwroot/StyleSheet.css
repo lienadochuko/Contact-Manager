@@ -1,5 +1,9 @@
-﻿﻿body {
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@300&display=swap');
+
+body {/*
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;*/
+    font-family: 'Roboto', sans-serif;
     font-size: 18px;
     background-color: #f7f7f7;
 }
