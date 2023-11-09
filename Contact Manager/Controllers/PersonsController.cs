@@ -61,7 +61,7 @@ namespace Contact_Manager.Controllers
             });
 
             return View();
-        }
+        } 
 
         //Url: persons/create
         [Route("[action]")]
@@ -83,6 +83,14 @@ namespace Contact_Manager.Controllers
 
             //navigate to Index() action method (it make another get request to "persons/index")
             return RedirectToAction("Index", "Persons");
+        }
+
+       
+        [HttpGet]
+        [Route("[action]/{personID}")] //Url: person/edit/1
+        public IActionResult Edit(Guid personID)
+        {
+            return View();
         }
     }
 }
