@@ -1,6 +1,6 @@
 ﻿@model PersonAddRequest
 @{
-    ViewBag.Title = "Create Person";
+    ViewBag.Title = "Edit Person";
 }
 
 <div class="box">
@@ -8,7 +8,7 @@
     <h2>Create Person</h2>
 
     <div class="w-90">
-        <form asp-controller="Person" asp-action="Create" method="post">
+        <form asp-controller="Person" asp-action="Edit" method="get">
             @*PersonName*@
             <div class="form-field flex">
                 <div class="w-25">

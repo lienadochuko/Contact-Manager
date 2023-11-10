@@ -1,0 +1,81 @@
+﻿@model PersonResponse
+@{
+    ViewBag.Title = "Delete Person";
+}
+
+<div class="box">
+    <h2>Delete Person</h2>
+    <h3>Are you sure you want to delete this person?</h3>
+
+    <div class="w-90">
+        <form asp-controller="Person" asp-action="Edit" method="post">
+            @*PersonID*@
+            <input type="hidden" asp-for="PersonID" />
+
+            @*PersonName*@
+            <div class="form-field flex">
+                <div class="w-25">
+                    <label for="PersonName" class="form-label pt">Person Name</label>
+                </div>
+                <div class="flex-1">
+                    <input asp-for="PersonName" class="form-input" disabled="disabled"/>
+                    <span asp-validation-for="PersonName" class="text-red"></span>
+                </div>
+            </div>
+
+
+
+            @*Email*@
+            <div class="form-field flex">
+                <div class="w-25">
+                    <label for="Email" class="form-label pt">Email</label>
+                </div>
+                <div class="flex-1">
+                    <input asp-for="Email" class="form-input" required="true" disabled="disabled" />
+                    <span asp-validation-for="Email" class="text-red"></span>
+                </div>
+            </div>
+
+            @*Submit*@
+            <div class="form-field flex">
+                <div class="w-25">
+                </div>
+                <div class="flex-1 flex">
+                    <button class="button button-red-back">Delete</button>
+                    <a asp-controller="Persons" asp-action="Index" class="link-hover">Back to Person List</a>
+                </div>
+                <div asp-validation-summary="All" class="text-red"></div>
+                @if (ViewBag.Errors != null)
+                {
+                    <div class="text-red ml">
+                        <ul>
+                            @foreach (string error in ViewBag.Errors)
+                            {
+                                <li class="ml">@error</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts
+    {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"
+            asp-fallback-test="window.JQuery" asp-fallback-src="~/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+            integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" asp-fallback-test="window.JQuery.validator"
+            asp-fallback-src="~/jquery.validate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"
+            integrity="sha512-xq+Vm8jC94ynOikewaQXMEkJIOBp7iArs3IhFWSWdRT3Pq8wFz46p+ZDFAR7kHnSFf+zUv52B3prRYnbDRdgog=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" asp-fallback-test="window.JQuery.validator.unobtrusive"
+            asp-fallback-src="~/jquery.validate.unobtrusive.min.js"></script>
+        }
