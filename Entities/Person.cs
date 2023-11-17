@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
@@ -24,6 +25,8 @@ namespace Entities
 
         [StringLength (200)]
         public string? Address { get; set; }
+
+        [ForeignKey("Country")]
         public Guid? CountryID { get; set; }
         public bool RecieveNewsLetter { get; set; }
     }
