@@ -26,7 +26,7 @@ namespace Entities
         [StringLength (200)]
         public string? Address { get; set; }
 
-        [ForeignKey("Country")]
+        //[ForeignKey("Country")]
         public Guid? CountryID { get; set; }
         public bool RecieveNewsLetter { get; set; }
     }
