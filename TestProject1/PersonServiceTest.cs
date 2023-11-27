@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Xunit;
-using ServiceContracts;
+﻿using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
 using Services;
 using Xunit.Abstractions;
 using Entities;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestProject1
 {
@@ -22,9 +20,9 @@ namespace TestProject1
 
         public PersonServiceTest(ITestOutputHelper testOutputHelper)
         {
-            _personService = new PersonService(false);
+            _countriesService = new CountriesService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options));
 
-            _countriesService = new CountriesService(false);
+            _personService = new PersonService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options), _countriesService);
 
             _testOutputHelper = testOutputHelper;
         }

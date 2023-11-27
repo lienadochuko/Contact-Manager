@@ -31,8 +31,8 @@
             <a asp-controller="Persons" asp-action="Index" class="link-hover">Clear all</a>
         </div>
     </div>
-    <table class="table w-100- mt">
-        <thead>
+    <table class="table w-85 mt">
+        <thead class="fixed">
             <tr>
                 @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
                     {"ColumnName", nameof(PersonResponse.PersonName)},
@@ -67,6 +67,10 @@
                 {"DisplayName", "Address"}
                 })
 
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                {"ColumnName", nameof(PersonResponse.NIN)},
+                {"DisplayName", "NIN"}
+                })
 
                 @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
                 {"ColumnName", nameof(PersonResponse.Country)},
@@ -91,9 +95,10 @@
                     <td style="width:9%">@person.Age</td>
                     <td style="width:10%">@person.Gender</td>
                     <td style="width:15%">@person.Address</td>
+                    <td style="width:15%">@person.NIN</td>
                     <td style="width:10%">@person.Country</td>
                     <td style="width:20%">@person.RecieveNewsLetter</td>
-                    <td style="width:20%">
+                    <td style="width:30%">
                         <a asp-controller="Persons" asp-action="Edit" asp-route-personID="@person.PersonID">Edit</a>
                         <a asp-controller="Persons" asp-action="Delete" asp-route-personID="@person.PersonID">Delete</a>
                     </td>

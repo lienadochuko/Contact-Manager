@@ -26,6 +26,7 @@ namespace ServiceContracts.DTO
 
         [Required(ErrorMessage = "Select your gender please")]
         public GenderOptions? Gender { get; set; }
+        public string? NIN { get; set; }
 
         [Required(ErrorMessage = "Please provide a valid Home/Office address")]
         public string? Address { get; set; }
@@ -48,6 +49,7 @@ namespace ServiceContracts.DTO
                 DOB = DOB,
                 Gender = Gender.ToString(),
                 Address = Address,
+                NIN = NIN,
                 CountryID = CountryID,
                 RecieveNewsLetter = RecieveNewsLetter
             };

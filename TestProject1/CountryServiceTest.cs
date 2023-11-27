@@ -4,6 +4,7 @@ using Services;
 using ServiceContracts.DTO;
 using System;
 using Xunit;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestProject1
 {
@@ -13,7 +14,7 @@ namespace TestProject1
         //constructor
         public CountryServiceTest()
         {
-            _countriesService = new CountriesService(false);
+            _countriesService = new CountriesService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options));
         }
 
         #region AddCountry

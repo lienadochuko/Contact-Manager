@@ -15,6 +15,7 @@ namespace ServiceContracts.DTO
         public string? Email { get; set; }
         public DateTime? DOB { get; set; }
         public string? Gender { get; set; }
+        public string? NIN { get; set; }
         public Guid? CountryID { get; set; }
         public string? Country { get; set; }
         public string? Address { get; set; }
@@ -41,6 +42,7 @@ namespace ServiceContracts.DTO
                 Email == person_to_comapare.Email &&
                 DOB == person_to_comapare.DOB &&
                 Gender == person_to_comapare.Gender &&
+                NIN == person_to_comapare.NIN &&
                 CountryID == person_to_comapare.CountryID &&
                 Country == person_to_comapare.Country &&
                 Address == person_to_comapare.Address &&
@@ -60,6 +62,7 @@ namespace ServiceContracts.DTO
                 $"Email: {Email}, \n" +
                 $"Date of Birth: {DOB}, \n" +
                 $"Gender: {Gender}, \n" +
+                $"NIN: {NIN}, \n" +
                 $"Age: {Age}, \n" +
                 $"Address: {Address}, \n" +
                 $"CountryID: {CountryID}, \n" +
@@ -77,6 +80,7 @@ namespace ServiceContracts.DTO
                 Email = Email,
                 DOB = DOB,
                 Gender = (GenderOptions)Enum.Parse(typeof(GenderOptions), Gender, true),
+                NIN = NIN,
                 Address = Address,
                 CountryID = CountryID,
                 RecieveNewsLetter = RecieveNewsLetter,
@@ -100,6 +104,7 @@ namespace ServiceContracts.DTO
                 Email = person.Email,
                 DOB = person.DOB,
                 Gender = person.Gender,
+                NIN = person.NIN,
                 Address = person.Address,
                 CountryID = person.CountryID,
                 Age = (person.DOB != null) ? Math.Round((DateTime.Now - person.DOB.Value).TotalDays / 365.25) : null,

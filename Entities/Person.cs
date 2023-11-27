@@ -29,5 +29,6 @@ namespace Entities
         //[ForeignKey("Country")]
         public Guid? CountryID { get; set; }
         public bool RecieveNewsLetter { get; set; }
+        public string? NIN { get; set; }
     }
 }

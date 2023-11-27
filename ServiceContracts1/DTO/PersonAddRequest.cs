@@ -25,6 +25,7 @@ namespace ServiceContracts.DTO
 
         [Required(ErrorMessage = "Select your gender please")]
         public GenderOptions? Gender { get; set; }
+        public string? NIN { get; set; }
 
         [Required(ErrorMessage = "Please provide a valid Home/Office address")]
         public string? Address { get; set; }
@@ -33,7 +34,6 @@ namespace ServiceContracts.DTO
         public Guid? CountryID { get; set; }
 
         public bool RecieveNewsLetter { get; set; }
-
         /// <summary>
         /// converts the current object of PersonAddRequest 
         /// into a new object of Person type
@@ -48,9 +48,10 @@ namespace ServiceContracts.DTO
                 Email = Email,
                 DOB = DOB,
                 Gender = Gender.ToString(),
+                NIN = NIN,
                 Address = Address,
                 CountryID = CountryID,
-                RecieveNewsLetter = RecieveNewsLetter
+                RecieveNewsLetter = RecieveNewsLetter,
             };
         }
     }

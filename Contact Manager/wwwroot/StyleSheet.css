@@ -146,7 +146,6 @@ body {/*
     padding-bottom: 10px;
 }
 
-
 .pl {
     padding-left: 10px;
 }
@@ -352,6 +351,10 @@ a.link-hover:hover {
 
 .form-label {
     display: inline-block;
+}
+
+.fixed {
+    position: fixed;
 }
 
 
