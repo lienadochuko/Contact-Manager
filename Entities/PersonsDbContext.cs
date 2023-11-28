@@ -27,7 +27,7 @@ namespace Entities
 			//sead to Countries
 			string countriesJson = System.IO.File.ReadAllText("countries.json");
 
-			List<Country> countries = System.Text.Json.JsonSerializer.Deserialize
+			List<Country>? countries = System.Text.Json.JsonSerializer.Deserialize
 				<List<Country>>(countriesJson);
 
 			foreach (Country country in countries)
@@ -38,17 +38,36 @@ namespace Entities
 			//sead to Persons
 
 			string personJson = System.IO.File.ReadAllText("persons.json");
-			List<Person> persons = System.Text.Json.JsonSerializer.Deserialize
+			List<Person>? persons = System.Text.Json.JsonSerializer.Deserialize
 				<List<Person>>(personJson);
 			foreach (Person person in persons)
 			{
 				modelBuilder.Entity<Person>().HasData(person);
 
 			}
+
+
+			////Fluent API
+			//modelBuilder.Entity<Person>().Property(temp => temp.NIN)
+			//	.HasColumnName("NationalIdentificationNumber")
+			//	.HasColumnType("varchar(10)")
+			//	.HasDefaultValue("NIN1234FB4");
+
+			//modelBuilder.Entity<Person>().HasCheckConstraint("CHK_TIN", "len([TaxIdentificationNumber]) = 8");
+
+			//Table Relations
+			//modelBuilder.Entity<Person>(entity =>
+			//{
+			//	entity.HasOne<Country>(c => c.country)
+			//	.WithMany(p => p.Persons)
+			//	.HasForeignKey(f => f.CountryID);
+			//});
 		}
 
 		public List<Person> sp_GetAllPersons()
 		{
+
+
 			return Persons.FromSqlRaw("EXECUTE [dbo].[GetAllPersons]").ToList();
 		}
 
@@ -86,7 +105,7 @@ namespace Entities
 				new SqlParameter("@RecieveNewsLetter", person.RecieveNewsLetter)
 			};
 
-            Console.WriteLine(person.NIN);
+            //Console.WriteLine(person.NIN);
 
             return Database.ExecuteSqlRaw(" EXECUTE [dbo].[UpdatePerson]" +
                 "@PersonID, @PersonName, @Email, @DOB, @Gender, @Address, @CountryID, @RecieveNewsLetter, @NIN", parameters);

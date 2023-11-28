@@ -137,6 +137,10 @@ namespace Entities.Migrations
                     b.Property<bool>("RecieveNewsLetter")
                         .HasColumnType("bit");
 
+                    b.Property<string>("NIN")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
                     b.HasKey("PersonID");
 
                     b.ToTable("Persons", (string)null);
@@ -151,7 +155,8 @@ namespace Entities.Migrations
                             Email = "davids.Grace@gmail.com",
                             Gender = "Male",
                             PersonName = "Grace Davids",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1"
                         },
                         new
                         {
@@ -162,7 +167,8 @@ namespace Entities.Migrations
                             Email = "whucknall1n@google.it",
                             Gender = "Male",
                             PersonName = "Wheeler Hucknall",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A1"
                         },
                         new
                         {
@@ -173,7 +179,8 @@ namespace Entities.Migrations
                             Email = "oduigan1o@plala.or.jp",
                             Gender = "Male",
                             PersonName = "Oliver Duigan",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A2"
                         },
                         new
                         {
@@ -184,7 +191,8 @@ namespace Entities.Migrations
                             Email = "kcowwell1p@mediafire.com",
                             Gender = "Female",
                             PersonName = "Kessiah Cowwell",
-                            RecieveNewsLetter = false
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A3"
                         },
                         new
                         {
@@ -195,7 +203,8 @@ namespace Entities.Migrations
                             Email = "rdawidowitz1q@goo.gl",
                             Gender = "Female",
                             PersonName = "Rosalyn Dawidowitz",
-                            RecieveNewsLetter = false
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A4"
                         },
                         new
                         {
@@ -206,7 +215,8 @@ namespace Entities.Migrations
                             Email = "balgar1r@altervista.org",
                             Gender = "Male",
                             PersonName = "Blaine Algar",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A5"
                         },
                         new
                         {
@@ -217,7 +227,8 @@ namespace Entities.Migrations
                             Email = "mgrotty1s@zdnet.com",
                             Gender = "Female",
                             PersonName = "Maureen Grotty",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A6"
                         },
                         new
                         {
@@ -228,7 +239,8 @@ namespace Entities.Migrations
                             Email = "llaurenceau1t@cafepress.com",
                             Gender = "Female",
                             PersonName = "Lethia Laurenceau",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A7"
                         },
                         new
                         {
@@ -239,7 +251,8 @@ namespace Entities.Migrations
                             Email = "cpentelo1u@posterous.com",
                             Gender = "Female",
                             PersonName = "Clarie Pentelo",
-                            RecieveNewsLetter = false
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B0"
                         },
                         new
                         {
@@ -250,7 +263,8 @@ namespace Entities.Migrations
                             Email = "chutchason1v@theguardian.com",
                             Gender = "Male",
                             PersonName = "Chandler Hutchason",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B1"
                         },
                         new
                         {
@@ -261,7 +275,8 @@ namespace Entities.Migrations
                             Email = "kmatisse1w@a8.net",
                             Gender = "Male",
                             PersonName = "Keen Matisse",
-                            RecieveNewsLetter = false
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B2"
                         },
                         new
                         {
@@ -272,7 +287,8 @@ namespace Entities.Migrations
                             Email = "mczajkowski1x@ning.com",
                             Gender = "Male",
                             PersonName = "Mickey Czajkowski",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B4"
                         },
                         new
                         {
@@ -283,7 +299,8 @@ namespace Entities.Migrations
                             Email = "chansom2r@hugedomains.com",
                             Gender = "Male",
                             PersonName = "Calhoun Hansom",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B3"
                         });
                 });
 #pragma warning restore 612, 618

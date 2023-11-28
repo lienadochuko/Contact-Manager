@@ -37,7 +37,7 @@ namespace Entities.Migrations
                     Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     CountryID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RecieveNewsLetter = table.Column<bool>(type: "bit", nullable: false),
-					NIN = table.Column<string>(type: "nvarchar(40)", nullable: true)
+					NIN = table.Column<string>(type: "varchar(10)", nullable: true)
 				},
                 constraints: table =>
                 {

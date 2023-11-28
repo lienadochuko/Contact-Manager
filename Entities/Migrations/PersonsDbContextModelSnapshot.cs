@@ -127,15 +127,16 @@ namespace Entities.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("NIN")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PersonName")
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<bool>("RecieveNewsLetter")
                         .HasColumnType("bit");
+
+                    b.Property<string>("NIN")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("PersonID");
 
@@ -150,9 +151,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "davids.Grace@gmail.com",
                             Gender = "Male",
-                            NIN = "SDBBBB-1",
                             PersonName = "Grace Davids",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1"
                         },
                         new
                         {
@@ -162,9 +163,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(2001, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "whucknall1n@google.it",
                             Gender = "Male",
-                            NIN = "SDBBBB-1A1",
                             PersonName = "Wheeler Hucknall",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A1"
                         },
                         new
                         {
@@ -174,9 +175,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(2000, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "oduigan1o@plala.or.jp",
                             Gender = "Male",
-                            NIN = "SDBBBB-1A2",
                             PersonName = "Oliver Duigan",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A2"
                         },
                         new
                         {
@@ -186,9 +187,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(1992, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kcowwell1p@mediafire.com",
                             Gender = "Female",
-                            NIN = "SDBBBB-1A3",
                             PersonName = "Kessiah Cowwell",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A3"
                         },
                         new
                         {
@@ -198,9 +199,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(1999, 1, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "rdawidowitz1q@goo.gl",
                             Gender = "Female",
-                            NIN = "SDBBBB-1A4",
                             PersonName = "Rosalyn Dawidowitz",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A4"
                         },
                         new
                         {
@@ -210,9 +211,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(1995, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "balgar1r@altervista.org",
                             Gender = "Male",
-                            NIN = "SDBBBB-1A5",
                             PersonName = "Blaine Algar",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A5"
                         },
                         new
                         {
@@ -222,9 +223,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(1992, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mgrotty1s@zdnet.com",
                             Gender = "Female",
-                            NIN = "SDBBBB-1A6",
                             PersonName = "Maureen Grotty",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A6"
                         },
                         new
                         {
@@ -234,9 +235,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(1993, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "llaurenceau1t@cafepress.com",
                             Gender = "Female",
-                            NIN = "SDBBBB-1A7",
                             PersonName = "Lethia Laurenceau",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1A7"
                         },
                         new
                         {
@@ -246,9 +247,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(2001, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "cpentelo1u@posterous.com",
                             Gender = "Female",
-                            NIN = "SDBBBB-1B0",
                             PersonName = "Clarie Pentelo",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B0"
                         },
                         new
                         {
@@ -258,9 +259,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(1991, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "chutchason1v@theguardian.com",
                             Gender = "Male",
-                            NIN = "SDBBBB-1B1",
                             PersonName = "Chandler Hutchason",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B1"
                         },
                         new
                         {
@@ -270,9 +271,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(1998, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "kmatisse1w@a8.net",
                             Gender = "Male",
-                            NIN = "SDBBBB-1B2",
                             PersonName = "Keen Matisse",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B2"
                         },
                         new
                         {
@@ -282,9 +283,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(1992, 8, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "mczajkowski1x@ning.com",
                             Gender = "Male",
-                            NIN = "SDBBBB-1B4",
                             PersonName = "Mickey Czajkowski",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B4"
                         },
                         new
                         {
@@ -294,9 +295,9 @@ namespace Entities.Migrations
                             DOB = new DateTime(2000, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "chansom2r@hugedomains.com",
                             Gender = "Male",
-                            NIN = "SDBBBB-1B3",
                             PersonName = "Calhoun Hansom",
-                            RecieveNewsLetter = true
+                            RecieveNewsLetter = true,
+                            NIN = "SDBBBB-1B3"
                         });
                 });
 #pragma warning restore 612, 618

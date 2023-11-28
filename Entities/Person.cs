@@ -25,10 +25,12 @@ namespace Entities
 
         [StringLength (200)]
         public string? Address { get; set; }
-
-        //[ForeignKey("Country")]
+        
         public Guid? CountryID { get; set; }
         public bool RecieveNewsLetter { get; set; }
         public string? NIN { get; set; }
+
+        [ForeignKey("CountryID")]
+        public virtual Country? country { get; set; }
     }
 }

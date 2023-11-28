@@ -12,7 +12,7 @@ namespace Entities.Migrations
 		{
 			string sp_UpdatePerson = @"
 CREATE PROCEDURE [dbo].[UpdatePerson]
-(@PersonID uniqueidentifier, @PersonName nvarchar(40), @Email nvarchar(40), @DOB datetime2(7), @Gender nvarchar(10), @Address nvarchar(200), @CountryID uniqueidentifier, @RecieveNewsLetter bit, @NIN nvarchar(max))
+(@PersonID uniqueidentifier, @PersonName nvarchar(40), @Email nvarchar(40), @DOB datetime2(7), @Gender nvarchar(10), @Address nvarchar(200), @CountryID uniqueidentifier, @RecieveNewsLetter bit, @NIN varchar(10))
 AS BEGIN
 UPDATE [dbo].[Persons] SET PersonName = @PersonName, Email = @Email, DOB = @DOB, Gender = @Gender, Address = @Address, CountryID = @CountryID, RecieveNewsLetter = @RecieveNewsLetter, NIN = @NIN
 WHERE PersonID = @PersonID
