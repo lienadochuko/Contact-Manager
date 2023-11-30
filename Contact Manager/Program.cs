@@ -2,6 +2,7 @@ using ServiceContracts;
 using Services;
 using Microsoft.EntityFrameworkCore;
 using Entities;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -25,9 +26,13 @@ if (builder.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+//Rotativa.AspNetCore.RotativaConfiguration.Setup(builder.Environment.WebRootPath, "Rotativa");
+//RotativaConfiguration.Setup(builder.Environment.WebRootPath, "Rotativa");
 
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();
+app.UseRotativa();
 
 app.Run();

@@ -38,12 +38,12 @@ namespace Contact_Manager.Controllers
                 {nameof(PersonResponse.Address), "Address"},
                 {nameof(PersonResponse.CountryID), "Country"}
             };
-            List<PersonResponse> persons =await _personServices.GetFilteredPersons(searchBy, searchString);
+            List<PersonResponse> persons = await _personServices.GetFilteredPersons(searchBy, searchString);
             ViewBag.CurrentSearchBy = searchBy;
             ViewBag.CurrentSearchString = searchString;
 
             //Sort
-            List<PersonResponse> sortedPerson =await _personServices.GetSortedPersons(persons, sortBy, sortOrderOptions);
+            List<PersonResponse> sortedPerson = await _personServices.GetSortedPersons(persons, sortBy, sortOrderOptions);
             ViewBag.CurrentSortBy = sortBy.ToString();
             ViewBag.CurrentSortOrderOptions = sortOrderOptions.ToString();
             return View(sortedPerson);
@@ -155,27 +155,44 @@ namespace Contact_Manager.Controllers
 
         [HttpPost]
         [Route("[action]/{personID}")]
-        public IActionResult Delete(PersonResponse personResponse)
+        public async Task<IActionResult> Delete(PersonResponse personResponse)
         {
-            if (personResponse == null) 
+            if (personResponse == null)
                 return RedirectToAction("Index");
 
-            _personServices.DeletePerson(personResponse.PersonID);
+            await _personServices.DeletePerson(personResponse.PersonID);
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> PersonPdf()
+        [Route("PersonsPDF")]
+        public async Task<IActionResult> PersonsPDF()
         {
             //Get list of persons
-           List<PersonResponse> personList = await _personServices.GetAllPersons();
+            List<PersonResponse> personList = await _personServices.GetAllPersons();
 
             //Return View as PDF
-            return new ViewAsPdf( "PersonPDF",personList, ViewData)
+            return new ViewAsPdf("PDF", personList, ViewData)
             {
-                PageMargins = new Rotativa.AspNetCore.Options.Margins() { Top = 20, Right =20,
-                Bottom = 20, Left = 20 },
-                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                FileName = "MyPdfFile.pdf",
+                PageMargins = new Rotativa.AspNetCore.Options.Margins()
+                { Top = 20, Right = 20, Bottom = 20, Left = 20 },
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape //it is by default Potrait
+            };
+        }
+        
+        [Route("PersonalPDF")]
+        public async Task<IActionResult> PersonalPDF()
+        {
+            //Get list of persons
+            List<PersonResponse> personList = await _personServices.GetAllPersons();
 
+            //Return View as PDF
+            return new ViewAsPdf("PersonalPDF", personList, ViewData)
+            {
+                FileName = "MyPdfFile.pdf",
+                PageMargins = new Rotativa.AspNetCore.Options.Margins()
+                { Top = 20, Right = 20, Bottom = 20, Left = 20 },
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape //it is by default Potrait
             };
         }
 
