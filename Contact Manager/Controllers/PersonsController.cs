@@ -171,7 +171,7 @@ namespace Contact_Manager.Controllers
             List<PersonResponse> personList = await _personServices.GetAllPersons();
 
             //Return View as PDF
-            return new ViewAsPdf("PDF", personList, ViewData)
+            return new ViewAsPdf("PersonsPDF", personList, ViewData)
             {
                 FileName = "MyPdfFile.pdf",
                 PageMargins = new Rotativa.AspNetCore.Options.Margins()

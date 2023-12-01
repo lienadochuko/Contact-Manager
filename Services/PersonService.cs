@@ -250,5 +250,13 @@ namespace Services
 
             return true;
         }
+
+        public Task<MemoryStream> GetPersonCSV()
+        {
+            MemoryStream memoryStream = new ();
+
+            StreamWriter writer = new (memoryStream);
+
+        }
     }
 }

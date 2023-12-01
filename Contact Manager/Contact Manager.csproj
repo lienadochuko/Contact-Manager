@@ -7,11 +7,6 @@
     <RootNamespace>Contact_Manager</RootNamespace>
   </PropertyGroup>
 
-
-	<ItemGroup>
-		<Content Remove="Views\Persons\PersonsPDF.cshtml" />
-	</ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
@@ -27,9 +22,5 @@
     <ProjectReference Include="..\ServiceContracts1\ServiceContracts.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
-	
-	<ItemGroup>
-		<None Include="Views\Persons\PersonsPDF.cshtml" />
-	</ItemGroup>
 
 </Project>
