@@ -5,6 +5,9 @@ using ServiceContracts;
 using Services.Helpers;
 using ServiceContracts.Enums;
 using Microsoft.EntityFrameworkCore;
+using CsvHelper;
+using System.Globalization;
+using CsvHelper.Configuration;
 
 namespace Services
 {
@@ -251,12 +254,57 @@ namespace Services
             return true;
         }
 
-        public Task<MemoryStream> GetPersonCSV()
+        public async Task<MemoryStream> GetPersonCSV()
         {
             MemoryStream memoryStream = new ();
+            StreamWriter streamWriter = new (memoryStream);
+           
 
-            StreamWriter writer = new (memoryStream);
+            CsvConfiguration csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
+            
+            CsvWriter csvWriter = new CsvWriter(streamWriter, csvConfiguration, leaveOpen: true);
 
+            //csvWriter.WriteHeader<PersonResponse>(); //using the model fields as heads such as PersonID, PersonName ...... 
+
+            //await csvWriter.WriteRecordsAsync(persons);
+            ////1, dan, dan@gmail.com ........
+
+            csvWriter.WriteField(nameof(PersonResponse.PersonName));
+            csvWriter.WriteField(nameof(PersonResponse.Email));
+            csvWriter.WriteField(nameof(PersonResponse.DOB));
+            csvWriter.WriteField(nameof(PersonResponse.Age));
+            csvWriter.WriteField(nameof(PersonResponse.Gender));
+            csvWriter.WriteField(nameof(PersonResponse.Address));
+            csvWriter.WriteField(nameof(PersonResponse.Country));
+            csvWriter.WriteField(nameof(PersonResponse.NIN));
+            csvWriter.WriteField(nameof(PersonResponse.RecieveNewsLetter));
+            csvWriter.NextRecord(); //goes to the next line (\n)
+
+            List<PersonResponse> persons = await _db.Persons
+                .Include("country")
+                .Select(temp => temp.ToPersonResponse()).ToListAsync();
+
+            foreach( PersonResponse person in persons )
+            {
+                csvWriter.WriteField(person.PersonName);
+                csvWriter.WriteField(person.Email);
+                csvWriter.WriteField(person.DOB.HasValue ? person.DOB.Value.ToString("yyyy-MM-dd") : "");
+                csvWriter.WriteField(person.Age);
+                csvWriter.WriteField(person.Gender);
+                csvWriter.WriteField(person.Address);
+                csvWriter.WriteField(person.Country);
+                csvWriter.WriteField(person.NIN);
+                csvWriter.WriteField(person.RecieveNewsLetter);
+                csvWriter.NextRecord(); //goes to the next line (\n)
+            }
+
+
+            await csvWriter.FlushAsync(); //when the buffer in the stremwriter gets filled up it flushes to stream, At the end of writing,
+                                          //you need to flush the writer so anything in the buffer gets written to the stream ensuring there is no missing record
+
+            memoryStream.Position = 0;
+
+            return memoryStream;
         }
     }
 }

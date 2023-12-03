@@ -196,5 +196,12 @@ namespace Contact_Manager.Controllers
             };
         }
 
+        [Route("PersonsCSV")]
+        public async Task<IActionResult> PersonsCSV()
+        {
+           MemoryStream memoryStream = await _personServices.GetPersonCSV();
+
+            return File(memoryStream, "application/octet-stream", "persons.csv");
+        }
     }
 }
