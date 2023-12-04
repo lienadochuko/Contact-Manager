@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
+using OfficeOpenXml;
 
 namespace Services
 {
@@ -305,6 +306,15 @@ namespace Services
             memoryStream.Position = 0;
 
             return memoryStream;
+        }
+
+        public Task<MemoryStream> GetPersonExcel()
+        {
+           MemoryStream memoryStream = new ();
+           using (ExcelPackage package = new ())
+            {
+                f
+            }
         }
     }
 }
