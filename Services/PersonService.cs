@@ -308,12 +308,48 @@ namespace Services
             return memoryStream;
         }
 
-        public Task<MemoryStream> GetPersonExcel()
+        public async Task<MemoryStream> GetPersonExcel()
         {
            MemoryStream memoryStream = new ();
-           using (ExcelPackage package = new ())
+
+           using (ExcelPackage excelpackage = new (memoryStream))
             {
-                f
+                ExcelWorksheet workSheet = excelpackage.Workbook.Worksheets.Add("PersonsSheet");
+                workSheet.Cells["A1"].Value = "Person Name";
+                workSheet.Cells["B1"].Value = "Email";
+                workSheet.Cells["C1"].Value = "Gender";
+                workSheet.Cells["D1"].Value = "Date of Birth";
+                workSheet.Cells["E1"].Value = "Age";
+                workSheet.Cells["F1"].Value = "Address";
+                workSheet.Cells["G1"].Value = "Country";
+                workSheet.Cells["H1"].Value = "Recieve NewsLetter";
+
+                int row = 2;
+
+                List<PersonResponse> personResponses = await _db.Persons
+                .Include("country")
+                .Select(temp => temp.ToPersonResponse()).ToListAsync();
+
+                foreach (PersonResponse person in personResponses)
+                {
+                    workSheet.Cells[row, 1].Value = person.PersonName;
+                    workSheet.Cells[row, 2].Value = person.Email;
+                    workSheet.Cells[row, 3].Value = person.Gender;
+                    workSheet.Cells[row, 4].Value = person.DOB.HasValue ? person.DOB.Value.ToString("yyyy-MM-dd") : "";
+                    workSheet.Cells[row, 5].Value = person.Age;
+                    workSheet.Cells[row, 6].Value = person.Address;
+                    workSheet.Cells[row, 7].Value = person.Country;
+                    workSheet.Cells[row, 8].Value = person.RecieveNewsLetter;
+
+                    row++;
+                }
+
+                workSheet.Cells[$"A1:H{row}"].AutoFitColumns();
+
+                await excelpackage.SaveAsync();
+
+                memoryStream.Position = 0;
+                return memoryStream;
             }
         }
     }
