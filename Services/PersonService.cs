@@ -9,6 +9,10 @@ using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
 using OfficeOpenXml;
+using System.Drawing;
+using OfficeOpenXml.Style;
+using System.IO;
+using OfficeOpenXml.Drawing;
 
 namespace Services
 {
@@ -314,7 +318,28 @@ namespace Services
 
            using (ExcelPackage excelpackage = new (memoryStream))
             {
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "image", "logoi.png");
                 ExcelWorksheet workSheet = excelpackage.Workbook.Worksheets.Add("PersonsSheet");
+                if (File.Exists(imagePath))
+                {
+                    // Add the image to the Excel file
+                    FileInfo image = new (imagePath);
+                    ExcelPicture picture = workSheet.Drawings.AddPicture("ImageName", image);
+                    picture.SetSize(50);
+                    picture.SetPosition(0, 0, 0, 0); // Adjust the position as needed
+                } else
+                {
+                    // Handle the case when the image file does not exist
+                    // You can log a message, throw an exception, etc.
+                }
+
+                using (ExcelRange excelRange = workSheet.Cells["A1:H1"])
+                {
+                    excelRange.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+
+                }
+
+                //Set Headings
                 workSheet.Cells["A1"].Value = "Person Name";
                 workSheet.Cells["B1"].Value = "Email";
                 workSheet.Cells["C1"].Value = "Gender";
@@ -323,6 +348,51 @@ namespace Services
                 workSheet.Cells["F1"].Value = "Address";
                 workSheet.Cells["G1"].Value = "Country";
                 workSheet.Cells["H1"].Value = "Recieve NewsLetter";
+
+
+                //Align Headings
+                workSheet.Cells["A1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                workSheet.Cells["B1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                workSheet.Cells["C1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                workSheet.Cells["D1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                workSheet.Cells["E1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                workSheet.Cells["F1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                workSheet.Cells["G1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                workSheet.Cells["H1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                //Bold
+                workSheet.Cells["A1"].Style.Font.Bold = true;
+                workSheet.Cells["B1"].Style.Font.Bold = true;
+                workSheet.Cells["C1"].Style.Font.Bold = true;
+                workSheet.Cells["D1"].Style.Font.Bold = true;
+                workSheet.Cells["E1"].Style.Font.Bold = true;
+                workSheet.Cells["F1"].Style.Font.Bold = true;
+                workSheet.Cells["G1"].Style.Font.Bold = true;
+                workSheet.Cells["H1"].Style.Font.Bold = true;
+                //Set Pattern and BackgroundColor 
+                workSheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
+
+                workSheet.Cells["B1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["B1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
+
+                workSheet.Cells["C1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["C1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
+
+                workSheet.Cells["D1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["D1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
+
+                workSheet.Cells["E1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["E1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
+
+                workSheet.Cells["F1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["F1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
+
+                workSheet.Cells["G1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["G1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
+
+                workSheet.Cells["H1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                workSheet.Cells["H1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
+
 
                 int row = 2;
 
@@ -340,6 +410,15 @@ namespace Services
                     workSheet.Cells[row, 6].Value = person.Address;
                     workSheet.Cells[row, 7].Value = person.Country;
                     workSheet.Cells[row, 8].Value = person.RecieveNewsLetter;
+
+                    workSheet.Cells[row, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    workSheet.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    workSheet.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    workSheet.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    workSheet.Cells[row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                    workSheet.Cells[row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                    workSheet.Cells[row, 7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right; ;
+                    workSheet.Cells[row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
 
                     row++;
                 }
