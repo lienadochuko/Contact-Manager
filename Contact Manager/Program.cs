@@ -29,7 +29,11 @@ if (builder.Environment.IsDevelopment())
 Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
 //Rotativa.AspNetCore.RotativaConfiguration.Setup(builder.Environment.WebRootPath, "Rotativa");
 //RotativaConfiguration.Setup(builder.Environment.WebRootPath, "Rotativa");
-
+app.Logger.LogDebug("Debug Message");
+app.Logger.LogInformation("Information Message");
+app.Logger.LogWarning("Warning Message");
+app.Logger.LogError("Error Message");
+app.Logger.LogCritical("Critical Message");
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();

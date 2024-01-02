@@ -318,15 +318,15 @@ namespace Services
 
            using (ExcelPackage excelpackage = new (memoryStream))
             {
-                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "image", "logoi.png");
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "image", "splash1.png");
                 ExcelWorksheet workSheet = excelpackage.Workbook.Worksheets.Add("PersonsSheet");
                 if (File.Exists(imagePath))
                 {
                     // Add the image to the Excel file
                     FileInfo image = new (imagePath);
                     ExcelPicture picture = workSheet.Drawings.AddPicture("ImageName", image);
-                    picture.SetSize(50);
-                    picture.SetPosition(0, 0, 0, 0); // Adjust the position as needed
+                    picture.SetSize(60);
+                    picture.SetPosition(1, 0, 6, 0); // Adjust the position as needed
                 } else
                 {
                     // Handle the case when the image file does not exist
@@ -394,7 +394,7 @@ namespace Services
                 workSheet.Cells["H1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
 
 
-                int row = 2;
+                int row = 4;
 
                 List<PersonResponse> personResponses = await _db.Persons
                 .Include("country")

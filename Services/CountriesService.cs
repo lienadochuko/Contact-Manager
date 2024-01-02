@@ -1,7 +1,9 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using OfficeOpenXml;
 
 namespace Services
 {
@@ -73,5 +75,24 @@ namespace Services
             return country_from_list.ToCountryResponse();
         }
 
+        public async Task<int> UploadCountriesFromExcelFile(IFormFile formFile)
+        {
+            MemoryStream memoryStream = new();
+            await formFile.CopyToAsync(memoryStream);
+
+            using (ExcelPackage excelPackage = new ExcelPackage(memoryStream))
+            {
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets["Countries"];
+
+                int rowCount = worksheet.Dimension.Rows;
+
+                for (int row = 2; row <= rowCount; row++)
+                {
+                    string? cellValue = Convert.ToString(worksheet.Cells[row, 1].Value);
+                }
+
+                return rowCount;
+            }
+        }
     }
 }

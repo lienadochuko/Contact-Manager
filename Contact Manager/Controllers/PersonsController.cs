@@ -26,7 +26,8 @@ namespace Contact_Manager.Controllers
         [Route("[action]")]
         //Url: persons/
         [Route("/")]
-        public async Task<IActionResult> Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrderOptions = SortOrderOptions.ASC)
+        public async Task<IActionResult> Index(string searchBy, string? searchString, 
+            string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrderOptions = SortOrderOptions.ASC)
         {
             //Searching
             ViewBag.SearchFields = new Dictionary<string, string>()

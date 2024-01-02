@@ -20,7 +20,7 @@ namespace Entities
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<Country>().ToTable("Countries");
+			modelBuilder.Entity<Country>().ToTable("Countries"); 
 
 			modelBuilder.Entity<Person>().ToTable("Persons");
 
