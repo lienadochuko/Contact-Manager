@@ -6,6 +6,9 @@ using Xunit.Abstractions;
 using Entities;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using EntityFrameworkCoreMock;
+using AutoFixture;
 
 namespace TestProject1
 {
@@ -13,18 +16,35 @@ namespace TestProject1
     {
         //private fields
         private readonly IPersonServices _personService;
-
         private readonly ICountriesService _countriesService;
-
         private readonly ITestOutputHelper _testOutputHelper;
+        private readonly IFixture _fixture;
+
+        //private readonly ILogger<PersonService> _logger;
 
         public PersonServiceTest(ITestOutputHelper testOutputHelper)
         {
-            _countriesService = new CountriesService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options));
+            var countriesInitialData = new List<Country>() { };
 
-            _personService = new PersonService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options), _countriesService);
+            DbContextMock<ApplicationDbContext> dbContextMock = new DbContextMock<ApplicationDbContext>(new DbContextOptionsBuilder<ApplicationDbContext>().Options);
+
+            ApplicationDbContext dbContext = dbContextMock.Object;
+            dbContextMock.CreateDbSetMock(temp => temp.Countries, countriesInitialData);
+
+            _countriesService = new CountriesService(dbContext);
+
+
+            var personsInitialData = new List<Person>() { };
+
+            DbContextMock<ApplicationDbContext> dbContextMockPerson = new DbContextMock<ApplicationDbContext>(new DbContextOptionsBuilder<ApplicationDbContext>().Options);
+
+            ApplicationDbContext dbContextPerson = dbContextMockPerson.Object;
+            dbContextMockPerson.CreateDbSetMock(temp => temp.Persons, personsInitialData);
+
+            _personService = new PersonService(dbContextPerson, _countriesService);
 
             _testOutputHelper = testOutputHelper;
+            _fixture = new Fixture();
         }
 
         public async Task<List<PersonAddRequest>> CreatePersons()
@@ -128,10 +148,13 @@ namespace TestProject1
         public async Task AddPerson_PersonNameIsNull()
         {
             //Arrange
-            PersonAddRequest? PersonAddRequest = new PersonAddRequest()
-            {
-                PersonName = null
-            };
+            //PersonAddRequest? PersonAddRequest = new PersonAddRequest()
+            //{
+            //    PersonName = null
+            //};
+            
+            PersonAddRequest? PersonAddRequest = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.PersonName, null as string).Create();
 
             //Act
             await Assert.ThrowsAsync<ArgumentException>(async () =>
@@ -150,16 +173,20 @@ namespace TestProject1
         [Fact]
         public async Task AddPerson_ProperPersonDetails()
         {
-            PersonAddRequest? personAddRequest = new PersonAddRequest()
-            {
-                PersonName = "Khalid",
-                Email = "khalid@gmail.com",
-                Address = ".gfgfgfgfg",
-                CountryID = Guid.NewGuid(),
-                Gender = GenderOptions.Male,
-                DOB = DateTime.Parse("2003-03-03"),
-                RecieveNewsLetter = true,
-            };
+            //PersonAddRequest? personAddRequest = _fixture.Create<PersonAddRequest>();
+
+            PersonAddRequest? personAddRequest = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.Email, "someone@example.com").Create();
+            //    new PersonAddRequest()
+            //{
+            //    PersonName = "Khalid",
+            //    Email = "khalid@gmail.com",
+            //    Address = ".gfgfgfgfg",
+            //    CountryID = Guid.NewGuid(),
+            //    Gender = GenderOptions.Male,
+            //    DOB = DateTime.Parse("2003-03-03"),
+            //    RecieveNewsLetter = true,
+            //};
 
             //Act
             PersonResponse person_response_from_add =
@@ -197,10 +224,7 @@ namespace TestProject1
         public async Task GetPersonByPerson_ValidPersonID()
         {
             //Arrange
-            CountryAddRequest countryAddRequest = new CountryAddRequest()
-            {
-                CountryName = "Canada"
-            };
+            CountryAddRequest countryAddRequest = _
             CountryResponse country_response = await _countriesService.AddCountry(countryAddRequest);
 
             //Act

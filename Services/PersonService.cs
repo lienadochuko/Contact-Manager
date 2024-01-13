@@ -13,6 +13,7 @@ using System.Drawing;
 using OfficeOpenXml.Style;
 using System.IO;
 using OfficeOpenXml.Drawing;
+using Microsoft.Extensions.Logging;
 
 namespace Services
 {
@@ -20,16 +21,19 @@ namespace Services
     {
         //private field
         //private readonly List<Person> _persons;
-        private readonly PersonsDbContext _db;
+        private readonly ApplicationDbContext _db;
         private readonly ICountriesService _countriesService;
+        //private readonly ILogger<PersonService> _logger;
 
-        public PersonService(PersonsDbContext personsDbContext, ICountriesService countriesService)
+        public PersonService(ApplicationDbContext personsDbContext, 
+            ICountriesService countriesService)
         {
             //_persons = new List<Person>();
+            //ILogger<PersonService> logger
 
             _db = personsDbContext;
             _countriesService = countriesService;
-
+           //_logger = logger;
         }
 
         public async Task<PersonResponse> AddPerson(PersonAddRequest? personAddRequest)
@@ -61,6 +65,7 @@ namespace Services
 
         public async Task<List<PersonResponse>> GetAllPersons()
         {
+           //_logger.LogInformation("GetAllPersons of PersonService");
             var persons = await _db.Persons.Include("country").ToListAsync();
             //SELECT * from Persons
             return persons.
@@ -86,6 +91,7 @@ namespace Services
 
         public async Task<List<PersonResponse>> GetFilteredPersons(string searchBy, string? searchString)
         {
+           //_logger.LogInformation("GetFilteredPersons of PersonService");
             List<PersonResponse> allPersons = await GetAllPersons();
             List<PersonResponse> matchingPerson = allPersons;
 
@@ -148,6 +154,8 @@ namespace Services
         public async Task<List<PersonResponse>> GetSortedPersons
             (List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrder)
         {
+           //_logger.LogInformation("GetSortedPersons of PersonService");
+
             if (string.IsNullOrEmpty(sortBy))
                 return allPersons;
 
