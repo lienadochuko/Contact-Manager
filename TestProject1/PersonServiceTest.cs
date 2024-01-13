@@ -224,21 +224,13 @@ namespace TestProject1
         public async Task GetPersonByPerson_ValidPersonID()
         {
             //Arrange
-            CountryAddRequest countryAddRequest = _
+            CountryAddRequest countryAddRequest = _fixture.Create<CountryAddRequest>();
             CountryResponse country_response = await _countriesService.AddCountry(countryAddRequest);
 
             //Act
-            PersonAddRequest personAddRequest = new PersonAddRequest()
-            {
-                PersonName = "Person Name",
-                Email = "email@sample.com",
-                Address = "my address",
-                DOB = DateTime.Parse("2000-07-09"),
-                Gender = GenderOptions.Male,
-                CountryID = country_response.CountryID,
-                RecieveNewsLetter = false
+            PersonAddRequest personAddRequest = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.Email, "someone@example.com").Create();
 
-            };
             PersonResponse personResponse = await _personService.AddPerson(personAddRequest);
 
             PersonResponse? personResponse_from_Get = await _personService.GetPersonByPersonID(personResponse.PersonID);
