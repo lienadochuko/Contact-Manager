@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using EntityFrameworkCoreMock;
 using AutoFixture;
+using FluentAssertions;
 
 namespace TestProject1
 {
@@ -49,64 +50,104 @@ namespace TestProject1
 
         public async Task<List<PersonAddRequest>> CreatePersons()
         {
-            //Arrange
-            CountryAddRequest countryAddRequest1 = new CountryAddRequest()
-            {
-                CountryName = "Bolivia"
-            };
+            #region
+            ////Arrange
+            //CountryAddRequest countryAddRequest1 = new CountryAddRequest()
+            //{
+            //    CountryName = "Bolivia"
+            //};
 
-            CountryAddRequest countryAddRequest2 = new CountryAddRequest()
-            {
-                CountryName = "India"
-            };
+            //CountryAddRequest countryAddRequest2 = new CountryAddRequest()
+            //{
+            //    CountryName = "India"
+            //};
 
-            CountryAddRequest countryAddRequest3 = new CountryAddRequest()
-            {
-                CountryName = "Morocco"
-            };
+            //CountryAddRequest countryAddRequest3 = new CountryAddRequest()
+            //{
+            //    CountryName = "Morocco"
+            //};
+
+            //CountryResponse country_response1 = await _countriesService.AddCountry(countryAddRequest1);
+            //CountryResponse country_response2 = await _countriesService.AddCountry(countryAddRequest2);
+            //CountryResponse country_response3 = await _countriesService.AddCountry(countryAddRequest3);
+
+
+            //PersonAddRequest personAddRequest1 = new PersonAddRequest()
+            //{
+            //    PersonName = "Boli",
+            //    Email = "boli@sample.com",
+            //    Address = "my address boli",
+            //    DOB = DateTime.Parse("2000-08-09"),
+            //    Gender = GenderOptions.Male,
+            //    CountryID = country_response1.CountryID,
+            //    RecieveNewsLetter = false
+
+            //};
+
+
+            //PersonAddRequest personAddRequest2 = new PersonAddRequest()
+            //{
+            //    PersonName = "India",
+            //    Email = "India@sample.com",
+            //    Address = "my address India",
+            //    DOB = DateTime.Parse("2000-07-09"),
+            //    Gender = GenderOptions.Female,
+            //    CountryID = country_response2.CountryID,
+            //    RecieveNewsLetter = false
+
+            //};
+
+
+            //PersonAddRequest personAddRequest3 = new PersonAddRequest()
+            //{
+            //    PersonName = "Moro",
+            //    Email = "Moro@sample.com",
+            //    Address = "my address",
+            //    DOB = DateTime.Parse("2000-06-09"),
+            //    Gender = GenderOptions.Others,
+            //    CountryID = country_response3.CountryID,
+            //    RecieveNewsLetter = false
+
+            //};
+
+
+            ////PersonResponse personResponse1 = _personService.AddPerson(personAddRequest1);
+            ////PersonResponse personResponse2 = _personService.AddPerson(personAddRequest2);
+            ////PersonResponse personResponse3 = _personService.AddPerson(personAddRequest3);
+            ////instead
+
+            //List<PersonAddRequest> personAdd_request = new List<PersonAddRequest>()
+            //{
+            //    personAddRequest1,
+            //    personAddRequest2,
+            //    personAddRequest3
+            //};
+            #endregion
+
+            CountryAddRequest countryAddRequest1 = _fixture.Create<CountryAddRequest>();
+
+            CountryAddRequest countryAddRequest2 = _fixture.Create<CountryAddRequest>();
+
+            CountryAddRequest countryAddRequest3 = _fixture.Create<CountryAddRequest>();
 
             CountryResponse country_response1 = await _countriesService.AddCountry(countryAddRequest1);
             CountryResponse country_response2 = await _countriesService.AddCountry(countryAddRequest2);
             CountryResponse country_response3 = await _countriesService.AddCountry(countryAddRequest3);
 
 
-            PersonAddRequest personAddRequest1 = new PersonAddRequest()
-            {
-                PersonName = "Boli",
-                Email = "boli@sample.com",
-                Address = "my address boli",
-                DOB = DateTime.Parse("2000-08-09"),
-                Gender = GenderOptions.Male,
-                CountryID = country_response1.CountryID,
-                RecieveNewsLetter = false
-
-            };
+            PersonAddRequest personAddRequest1 = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.Email, "boli@sample.com")
+                .With(temp => temp.CountryID, country_response1.CountryID).Create();
 
 
-            PersonAddRequest personAddRequest2 = new PersonAddRequest()
-            {
-                PersonName = "India",
-                Email = "India@sample.com",
-                Address = "my address India",
-                DOB = DateTime.Parse("2000-07-09"),
-                Gender = GenderOptions.Female,
-                CountryID = country_response2.CountryID,
-                RecieveNewsLetter = false
 
-            };
+            PersonAddRequest personAddRequest2 = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.Email, "India@sample.com")
+                .With(temp => temp.CountryID, country_response2.CountryID).Create();
 
-
-            PersonAddRequest personAddRequest3 = new PersonAddRequest()
-            {
-                PersonName = "Moro",
-                Email = "Moro@sample.com",
-                Address = "my address",
-                DOB = DateTime.Parse("2000-06-09"),
-                Gender = GenderOptions.Others,
-                CountryID = country_response3.CountryID,
-                RecieveNewsLetter = false
-
-            };
+            PersonAddRequest personAddRequest3 = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.Email, "Moro@sample.com")
+                .With(temp => temp.CountryID, country_response3.CountryID).Create();
 
 
             //PersonResponse personResponse1 = _personService.AddPerson(personAddRequest1);
@@ -121,7 +162,7 @@ namespace TestProject1
                 personAddRequest3
             };
 
-            return personAdd_request.ToList();
+            return personAdd_request;
         }
 
         #region AddPerson
@@ -134,12 +175,20 @@ namespace TestProject1
             PersonAddRequest? PersonAddRequest = null;
 
             //Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            //await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            //{
+            //    //Act
+            //    await _personService.AddPerson(PersonAddRequest);
+
+            //});
+
+            Func<Task> action =  async () =>
             {
                 //Act
                 await _personService.AddPerson(PersonAddRequest);
 
-            });
+            };
+            await action.Should().ThrowAsync<ArgumentNullException>();
         }
 
         //when the supplied PersonName is null,
@@ -157,11 +206,18 @@ namespace TestProject1
                 .With(temp => temp.PersonName, null as string).Create();
 
             //Act
-            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            //await Assert.ThrowsAsync<ArgumentException>(async () =>
+            //{
+            //    //Act
+            //    await _personService.AddPerson(PersonAddRequest);
+            //});
+
+            Func<Task> action = async () =>
             {
                 //Act
                 await _personService.AddPerson(PersonAddRequest);
-            });
+            };
+            await action.Should().ThrowAsync<ArgumentException>();
         }
 
 
@@ -196,8 +252,13 @@ namespace TestProject1
                 await _personService.GetAllPersons();
 
             //Assert
-            Assert.True(person_response_from_add.PersonID != Guid.Empty);
-            Assert.Contains(person_response_from_add, person_response_to_GetAllPerson);
+            //Assert.True(person_response_from_add.PersonID != Guid.Empty);
+            //Assert.Contains(person_response_from_add, person_response_to_GetAllPerson);
+
+            //using fluent assertion
+            person_response_from_add.Should().NotBe(Guid.Empty);
+            person_response_to_GetAllPerson.Should().Contain(person_response_from_add);
+
         }
         #endregion
 
@@ -215,7 +276,8 @@ namespace TestProject1
             PersonResponse? person_response_from_get = await _personService.GetPersonByPersonID(personID);
 
             //Assert
-            Assert.Null(person_response_from_get);
+            //Assert.Null(person_response_from_get);
+            person_response_from_get.Should().BeNull();
         }
 
         //If we supply a valid person id, it should return the valid person
@@ -237,7 +299,8 @@ namespace TestProject1
 
 
             //Assert
-            Assert.Equal(personResponse_from_Get, personResponse);
+            //Assert.Equal(personResponse_from_Get, personResponse);
+            personResponse.Should().Be(personResponse_from_Get);
         }
         #endregion
 
@@ -259,77 +322,9 @@ namespace TestProject1
         public async Task GetAllPerson_AddFewPersons()
         {
 
+
             //Arrange
-            CountryAddRequest countryAddRequest1 = new CountryAddRequest()
-            {
-                CountryName = "Bolivia"
-            };
-
-            CountryAddRequest countryAddRequest2 = new CountryAddRequest()
-            {
-                CountryName = "India"
-            };
-
-            CountryAddRequest countryAddRequest3 = new CountryAddRequest()
-            {
-                CountryName = "Morocco"
-            };
-
-            CountryResponse country_response1 = await _countriesService.AddCountry(countryAddRequest1);
-            CountryResponse country_response2 = await _countriesService.AddCountry(countryAddRequest2);
-            CountryResponse country_response3 = await _countriesService.AddCountry(countryAddRequest3);
-
-
-            PersonAddRequest personAddRequest1 = new PersonAddRequest()
-            {
-                PersonName = "Boli",
-                Email = "boli@sample.com",
-                Address = "my address boli",
-                DOB = DateTime.Parse("2000-08-09"),
-                Gender = GenderOptions.Male,
-                CountryID = country_response1.CountryID,
-                RecieveNewsLetter = false
-
-            };
-
-
-            PersonAddRequest personAddRequest2 = new PersonAddRequest()
-            {
-                PersonName = "India",
-                Email = "India@sample.com",
-                Address = "my address India",
-                DOB = DateTime.Parse("2000-07-09"),
-                Gender = GenderOptions.Female,
-                CountryID = country_response2.CountryID,
-                RecieveNewsLetter = false
-
-            };
-
-
-            PersonAddRequest personAddRequest3 = new PersonAddRequest()
-            {
-                PersonName = "Moro",
-                Email = "Moro@sample.com",
-                Address = "my address",
-                DOB = DateTime.Parse("2000-06-09"),
-                Gender = GenderOptions.Others,
-                CountryID = country_response3.CountryID,
-                RecieveNewsLetter = false
-
-            };
-
-
-            //PersonResponse personResponse1 = _personService.AddPerson(personAddRequest1);
-            //PersonResponse personResponse2 = _personService.AddPerson(personAddRequest2);
-            //PersonResponse personResponse3 = _personService.AddPerson(personAddRequest3);
-            //instead
-
-            List<PersonAddRequest> personAdd_request = new List<PersonAddRequest>()
-            {
-                personAddRequest1,
-                personAddRequest2,
-                personAddRequest3
-            };
+            List<PersonAddRequest> personAdd_request = await CreatePersons();
 
             List<PersonResponse> person_reponse_list_from_add = new List<PersonResponse>();
 
@@ -370,76 +365,7 @@ namespace TestProject1
         public async Task GetFilteredPersons_NullSearch()
         {
             //Arrange
-            CountryAddRequest countryAddRequest1 = new CountryAddRequest()
-            {
-                CountryName = "Bolivia"
-            };
-
-            CountryAddRequest countryAddRequest2 = new CountryAddRequest()
-            {
-                CountryName = "India"
-            };
-
-            CountryAddRequest countryAddRequest3 = new CountryAddRequest()
-            {
-                CountryName = "Morocco"
-            };
-
-            CountryResponse country_response1 = await _countriesService.AddCountry(countryAddRequest1);
-            CountryResponse country_response2 = await _countriesService.AddCountry(countryAddRequest2);
-            CountryResponse country_response3 = await _countriesService.AddCountry(countryAddRequest3);
-
-
-            PersonAddRequest personAddRequest1 = new PersonAddRequest()
-            {
-                PersonName = "Boli",
-                Email = "boli@sample.com",
-                Address = "my address boli",
-                DOB = DateTime.Parse("2000-08-09"),
-                Gender = GenderOptions.Male,
-                CountryID = country_response1.CountryID,
-                RecieveNewsLetter = false
-
-            };
-
-
-            PersonAddRequest personAddRequest2 = new PersonAddRequest()
-            {
-                PersonName = "India",
-                Email = "India@sample.com",
-                Address = "my address India",
-                DOB = DateTime.Parse("2000-07-09"),
-                Gender = GenderOptions.Female,
-                CountryID = country_response2.CountryID,
-                RecieveNewsLetter = false
-
-            };
-
-
-            PersonAddRequest personAddRequest3 = new PersonAddRequest()
-            {
-                PersonName = "Moro",
-                Email = "Moro@sample.com",
-                Address = "my address",
-                DOB = DateTime.Parse("2000-06-09"),
-                Gender = GenderOptions.Others,
-                CountryID = country_response3.CountryID,
-                RecieveNewsLetter = false
-
-            };
-
-
-            //PersonResponse personResponse1 = _personService.AddPerson(personAddRequest1);
-            //PersonResponse personResponse2 = _personService.AddPerson(personAddRequest2);
-            //PersonResponse personResponse3 = _personService.AddPerson(personAddRequest3);
-            //instead
-
-            List<PersonAddRequest> personAdd_request = new List<PersonAddRequest>()
-            {
-                personAddRequest1,
-                personAddRequest2,
-                personAddRequest3
-            };
+            List<PersonAddRequest> personAdd_request = await CreatePersons();
 
             List<PersonResponse> person_reponse_list_from_add = new List<PersonResponse>();
 
@@ -681,7 +607,7 @@ namespace TestProject1
 
             PersonResponse person_reponse_from_add = await _personService.AddPerson(personAddRequest);
 
-            _testOutputHelper.WriteLine("Origanal");
+            //_testOutputHelper.WriteLine("Origanal");
             _testOutputHelper.WriteLine(person_reponse_from_add.ToString());
 
             PersonUpdateRequest person_update_request = person_reponse_from_add.ToPersonUpdateRequest();
