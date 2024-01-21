@@ -136,16 +136,19 @@ namespace TestProject1
 
 
             PersonAddRequest personAddRequest1 = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.PersonName, "animasheun masimo")
                 .With(temp => temp.Email, "boli@sample.com")
                 .With(temp => temp.CountryID, country_response1.CountryID).Create();
 
 
 
             PersonAddRequest personAddRequest2 = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.PersonName, "micheal asimo")
                 .With(temp => temp.Email, "India@sample.com")
                 .With(temp => temp.CountryID, country_response2.CountryID).Create();
 
             PersonAddRequest personAddRequest3 = _fixture.Build<PersonAddRequest>()
+                .With(temp => temp.PersonName, "creche masimo")
                 .With(temp => temp.Email, "Moro@sample.com")
                 .With(temp => temp.CountryID, country_response3.CountryID).Create();
 
@@ -182,7 +185,7 @@ namespace TestProject1
 
             //});
 
-            Func<Task> action =  async () =>
+            Func<Task> action = async () =>
             {
                 //Act
                 await _personService.AddPerson(PersonAddRequest);
@@ -201,7 +204,7 @@ namespace TestProject1
             //{
             //    PersonName = null
             //};
-            
+
             PersonAddRequest? PersonAddRequest = _fixture.Build<PersonAddRequest>()
                 .With(temp => temp.PersonName, null as string).Create();
 
@@ -314,7 +317,8 @@ namespace TestProject1
             List<PersonResponse> person_from_get = await _personService.GetAllPersons();
 
             //Assert
-            Assert.Empty(person_from_get);
+            //Assert.Empty(person_from_get);
+            person_from_get.Should().BeEmpty();
         }
 
         //After adding a few persons, we should get the same persons when we call the GetAllPerson()
@@ -340,8 +344,10 @@ namespace TestProject1
             //Assert
             foreach (PersonResponse person_response_from_add in person_reponse_list_from_add)
             {
-                Assert.Contains(person_response_from_add, person_list_from_get);
+                //Assert.Contains(person_response_from_add, person_list_from_get);
+                person_list_from_get.Should().Contain(person_response_from_add);
             }
+            person_list_from_get.Should().BeEquivalentTo(person_reponse_list_from_add);
 
             //print both the expected and actual value
             _testOutputHelper.WriteLine("Expected");
@@ -399,6 +405,8 @@ namespace TestProject1
             {
                 Assert.Contains(person_response_from_add, person_list_from_search);
             }
+                person_list_from_search.Should().BeEquivalentTo(person_reponse_list_from_add);
+
         }
 
 
@@ -449,6 +457,7 @@ namespace TestProject1
                         Assert.Contains(person_response_from_add, person_list_from_search);
                     }
                 }
+                person_list_from_search.Should().OnlyContain(temp => temp.PersonName.Contains("a", StringComparison.OrdinalIgnoreCase));
             }
         }
         #endregion'
@@ -499,8 +508,10 @@ namespace TestProject1
             //Assert
             for (int i = 0; i < person_reponse_list_from_add.Count; i++)
             {
-                Assert.Equal(person_reponse_list_from_add[i], person_list_from_sort[i]);
+                //Assert.Equal(person_reponse_list_from_add[i], person_list_from_sort[i]);
+                person_list_from_sort[i].Should().BeEquivalentTo(person_reponse_list_from_add[i]);
             }
+
         }
         #endregion
 
@@ -515,10 +526,13 @@ namespace TestProject1
 
 
             //Assert
-           await Assert.ThrowsAsync<ArgumentNullException>(async () => {
+            Func<Task> action = async () => {
                 //Act
                 await _personService.UpdatePerson(person_update_request);
-            });
+            };
+
+            await action.Should().ThrowAsync<ArgumentNullException>();
+            
         }
 
         [Fact]
@@ -535,7 +549,7 @@ namespace TestProject1
             //Assert
             await Assert.ThrowsAsync<ArgumentException>(async () => {
                 //Act
-               await _personService.UpdatePerson(person_update_request);
+                await _personService.UpdatePerson(person_update_request);
             });
         }
 
@@ -545,7 +559,6 @@ namespace TestProject1
         {
 
             //Arrange
-
             CountryAddRequest countryAddRequest = new CountryAddRequest()
             {
                 CountryName = "Morocco"
@@ -571,11 +584,13 @@ namespace TestProject1
 
 
             //Assert
-            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            Func<Task> action = async () =>
             {
                 //Act
                 await _personService.UpdatePerson(person_update_reuqest);
-            });
+            };
+
+            await action.Should().ThrowAsync<ArgumentException>();
         }
 
         [Fact]
@@ -617,15 +632,16 @@ namespace TestProject1
             //Act
             PersonResponse person_reponse_from_update = await _personService.UpdatePerson(person_update_request);
             _testOutputHelper.WriteLine("Actual");
-           _testOutputHelper.WriteLine(person_reponse_from_update.ToString());
+            _testOutputHelper.WriteLine(person_reponse_from_update.ToString());
 
-            PersonResponse? person_response_from_getPerson =  await _personService.GetPersonByPersonID(person_update_request.PersonID);
+            PersonResponse? person_response_from_getPerson = await _personService.GetPersonByPersonID(person_update_request.PersonID);
             _testOutputHelper.WriteLine("Expected");
             _testOutputHelper.WriteLine(person_response_from_getPerson?.ToString());
 
 
             //Assert
-            Assert.Equal(person_response_from_getPerson, person_reponse_from_update);
+            //Assert.Equal(person_response_from_getPerson, person_reponse_from_update);
+            person_reponse_from_update.Should().BeEquivalentTo(person_response_from_getPerson);
         }
 
 
@@ -663,18 +679,20 @@ namespace TestProject1
             bool isDeleted = await _personService.DeletePerson(person_reponse_from_add.PersonID);
 
             //Assert
-            Assert.True(isDeleted);
+            //Assert.True(isDeleted);
+            isDeleted.Should().BeTrue();
         }
 
         //when an invalid PersonID is supplied it should return false
         [Fact]
         public async Task DeletePerson_InvalidPerson()
-        {            
+        {
             //Act
             bool isDeleted = await _personService.DeletePerson(Guid.NewGuid());
 
             //Assert
-            Assert.False(isDeleted);
+            //Assert.False(isDeleted);
+            isDeleted.Should().BeFalse();
         }
         #endregion
     }
