@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RepositoryContracts
+namespace RepositoryContract_s_
 {
     /// <summary>
     /// Represent data access logic for managing Person entity

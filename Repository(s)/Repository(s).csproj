@@ -2,18 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Repository_s_</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="30.0.1" />
-    <PackageReference Include="EPPlus" Version="7.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Entities\Entities.csproj" />
     <ProjectReference Include="..\RepositoryContract(s)\RepositoryContract(s).csproj" />
-    <ProjectReference Include="..\ServiceContracts1\ServiceContracts.csproj" />
   </ItemGroup>
 
 </Project>

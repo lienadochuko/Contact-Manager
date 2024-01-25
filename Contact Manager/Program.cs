@@ -42,7 +42,7 @@ Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePa
 //app.Logger.LogInformation("Information Message");
 //app.Logger.LogWarning("Warning Message");
 //app.Logger.LogError("Error Message");
-//app.Logger.LogCritical("Critical Message");
+//app.Logger.LogCritical("Critical Message");1
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();
