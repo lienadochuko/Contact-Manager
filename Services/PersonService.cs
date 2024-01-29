@@ -14,6 +14,7 @@ using OfficeOpenXml.Style;
 using System.IO;
 using OfficeOpenXml.Drawing;
 using Microsoft.Extensions.Logging;
+using RepositoryContract_s_;
 
 namespace Services
 {
@@ -21,17 +22,17 @@ namespace Services
     {
         //private field
         //private readonly List<Person> _persons;
-        private readonly ApplicationDbContext _db;
+        private readonly IPersonRepository _personRepository;
         private readonly ICountriesService _countriesService;
         //private readonly ILogger<PersonService> _logger;
 
-        public PersonService(ApplicationDbContext personsDbContext, 
+        public PersonService(IPersonRepository personRepository, 
             ICountriesService countriesService)
         {
             //_persons = new List<Person>();
             //ILogger<PersonService> logger
 
-            _db = personsDbContext;
+            _personRepository = personRepository;
             _countriesService = countriesService;
            //_logger = logger;
         }
@@ -55,8 +56,7 @@ namespace Services
             person.PersonID = Guid.NewGuid();
 
             //add person to person list
-            await _db.Persons.AddAsync(person);
-            await _db.SaveChangesAsync();
+            await _personRepository.AddPerson(person);
             //_db.sp_InsertPerson(person);
 
             //convert the Person object into PersonResponse type
@@ -66,7 +66,7 @@ namespace Services
         public async Task<List<PersonResponse>> GetAllPersons()
         {
            //_logger.LogInformation("GetAllPersons of PersonService");
-            var persons = await _db.Persons.Include("country").ToListAsync();
+            var persons = await _personRepository.GetAllPerson();
             //SELECT * from Persons
             return persons.
                 Select(person => person.ToPersonResponse()).ToList();
@@ -81,7 +81,7 @@ namespace Services
             if (personID == null)
                 return null;
 
-            Person? person = await _db.Persons.Include("country").FirstOrDefaultAsync(temp => temp.PersonID == personID);
+            Person? person = await _personRepository.GetPersonByPersonID(personID);
             if (person == null)
                 return null;
 

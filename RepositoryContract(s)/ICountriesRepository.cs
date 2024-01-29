@@ -26,7 +26,7 @@ namespace RepositoryContract_s_
         /// </summary>
         /// <param name="countryID">CountryID to search for</param>
         /// <returns>Reutrns matching country or null</returns>
-        Task<Country?> GetCountryByCountryID(Guid countryID);
+        Task<Country?> GetCountryByCountryID(Guid? countryID);
 
         /// <summary>
         /// Return the country based on the countryName otherwise, it returns null

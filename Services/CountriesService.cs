@@ -62,14 +62,14 @@ namespace Services
             return country.ToCountryResponse();
         }
 
-        public async Task<CountryResponse?> GetCountryByCountryID(Guid countryID)
+        public async Task<CountryResponse?> GetCountryByCountryID(Guid? countryID)
         {
             if(countryID == null)
                 return null;
 
 
             Country? country_from_list =
-                 await _countriesRepository.GetCountryByCountryID(countryID);
+                 await _countriesRepository.GetCountryByCountryID(countryID.Value);
             if (country_from_list == null)
                 return null;
 
@@ -80,6 +80,8 @@ namespace Services
         {
             MemoryStream memoryStream = new();
             await formFile.CopyToAsync(memoryStream);
+            int countryInserted = 0;
+
 
             using (ExcelPackage excelPackage = new ExcelPackage(memoryStream))
             {
@@ -90,10 +92,28 @@ namespace Services
                 for (int row = 2; row <= rowCount; row++)
                 {
                     string? cellValue = Convert.ToString(worksheet.Cells[row, 1].Value);
-                }
 
-                return rowCount;
+                    if (!string.IsNullOrEmpty(cellValue))
+                    {
+                        string? countryName = cellValue;
+
+                        if (await _countriesRepository.GetCountryByCountryName(countryName) == null)
+                        {
+                            Country country = new Country()
+                            {
+                                CountryID = Guid.NewGuid(),
+                                CountryName = countryName,
+                            };
+
+                            await _countriesRepository.AddCountry(country);
+
+                            countryInserted++;
+                        }
+                    }
+                }
             }
+
+            return countryInserted;
         }
     }
 }

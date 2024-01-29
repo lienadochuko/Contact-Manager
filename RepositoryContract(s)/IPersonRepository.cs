@@ -32,7 +32,7 @@ namespace RepositoryContract_s_
         /// </summary>
         /// <param name="personID">PersonId to search for</param>
         /// <returns>Returns matching Person Object or null</returns>
-        Task<Person> GetPersonByPersonID(Guid personID);
+        Task<Person> GetPersonByPersonID(Guid? personID);
 
         /// <summary>
         /// Returns all person object based on the given expression
