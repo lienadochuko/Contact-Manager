@@ -223,26 +223,14 @@ namespace Services
             if (personUpdateRequest.PersonID == new Guid())
                 throw new ArgumentException(nameof(personUpdateRequest.PersonID));
 
-            Person? matchingPerson = await _db.Persons.FirstOrDefaultAsync(temp => temp.PersonID == personUpdateRequest.PersonID);
+            Person? matchingPerson = await _personRepository.GetPersonByPersonID(personUpdateRequest.PersonID);
             if (matchingPerson == null)
             {
                 throw new ArgumentException("Given person id doesn't exist");
             }
 
             //update all details
-            matchingPerson.PersonName = personUpdateRequest.PersonName;
-            matchingPerson.Email = personUpdateRequest.Email;
-            matchingPerson.DOB = personUpdateRequest.DOB;
-            matchingPerson.Address = personUpdateRequest.Address;
-            matchingPerson.Gender = personUpdateRequest.Gender.ToString();
-            matchingPerson.NIN = personUpdateRequest.NIN;
-            matchingPerson.CountryID = personUpdateRequest.CountryID;
-            matchingPerson.RecieveNewsLetter = personUpdateRequest.RecieveNewsLetter;
-
-            //Console.WriteLine(personUpdateRequest.NIN);
-
-            await _db.SaveChangesAsync();
-            //_db.sp_UpdatePerson(matchingPerson);
+            await _personRepository.UpdatePerson(matchingPerson);
 
             return matchingPerson.ToPersonResponse();
         }
@@ -253,17 +241,13 @@ namespace Services
                 throw new ArgumentNullException(nameof(personID));
 
 
-            Person? matchingPerson = await _db.Persons.FirstOrDefaultAsync(temp => temp.PersonID == personID);
+            Person? matchingPerson = await _personRepository.GetPersonByPersonID(personID.Value);
             if (matchingPerson == null)
             {
                 return false;
             }
 
-            _db.Persons.Remove(await _db.Persons.FirstAsync(temp => temp.PersonID == personID));
-            await _db.SaveChangesAsync();
-            //_db.sp_DeletePerson(matchingPerson);
-
-
+            await _personRepository.DeletePersonByPersonID(matchingPerson.PersonID);
             return true;
         }
 
@@ -293,9 +277,7 @@ namespace Services
             csvWriter.WriteField(nameof(PersonResponse.RecieveNewsLetter));
             csvWriter.NextRecord(); //goes to the next line (\n)
 
-            List<PersonResponse> persons = await _db.Persons
-                .Include("country")
-                .Select(temp => temp.ToPersonResponse()).ToListAsync();
+            List<PersonResponse> persons = await _personRepository.GetAllPerson();
 
             foreach( PersonResponse person in persons )
             {
