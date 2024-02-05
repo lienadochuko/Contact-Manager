@@ -34,6 +34,13 @@ namespace RepositoryContract_s_
         /// <returns>Returns matching Person Object or null</returns>
         Task<Person> GetPersonByPersonID(Guid? personID);
 
+       /// <summary>
+       /// Returns Person object from the data store base on the PersonName
+       /// </summary>
+       /// <param name="personName">PersonName to search for</param>
+       /// <returns>Returns matching Person Object or null</returns>
+        Task<Person> GetPersonByPersonName(string? personName);
+
         /// <summary>
         /// Returns all person object based on the given expression
         /// </summary>

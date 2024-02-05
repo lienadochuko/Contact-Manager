@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using EntityFrameworkCoreMock;
 using AutoFixture;
 using FluentAssertions;
+using RepositoryContract_s_;
+using Moq;
 
 namespace TestProject1
 {
@@ -17,6 +19,9 @@ namespace TestProject1
     {
         //private fields
         private readonly IPersonServices _personService;
+        public readonly Mock<IPersonRepository> _personRepositoryMock;
+        public readonly IPersonRepository _personRepository;
+        public readonly ICountriesRepository _countriesRepository;
         private readonly ICountriesService _countriesService;
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly IFixture _fixture;
@@ -26,6 +31,7 @@ namespace TestProject1
         public PersonServiceTest(ITestOutputHelper testOutputHelper)
         {
             var countriesInitialData = new List<Country>() { };
+            _personRepositoryMock = new Mock<IPersonRepository>();
 
             DbContextMock<ApplicationDbContext> dbContextMock = new DbContextMock<ApplicationDbContext>(new DbContextOptionsBuilder<ApplicationDbContext>().Options);
 
@@ -230,7 +236,7 @@ namespace TestProject1
         //PersonResponse, which should
         //include the newly generated personID
         [Fact]
-        public async Task AddPerson_ProperPersonDetails()
+        public async Task AddPerson_FullPersonDetails_ToBeSucces ull()
         {
             //PersonAddRequest? personAddRequest = _fixture.Create<PersonAddRequest>();
 

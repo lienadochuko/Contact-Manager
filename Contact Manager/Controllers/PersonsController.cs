@@ -218,5 +218,34 @@ namespace Contact_Manager.Controllers
 
             return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "persons.xlsx");
         }
+
+        [Route("PersonUpload")]
+        [HttpGet]
+        public IActionResult UploadExcel()
+        {
+            return View();
+        }
+
+        [Route("PersonUpload")]
+        [HttpPost]
+        public async Task<IActionResult> UploadExcel(IFormFile excelFile)
+        {
+            if (excelFile == null || excelFile.Length == 0)
+            {
+                ViewBag.ErrorMessage = "Please select an xlsx file";
+                return View();
+            }
+
+            if (!Path.GetExtension(excelFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                ViewBag.ErrorMessage = "Unsupported fileType, Please select an xlsx file";
+                return View();
+            }
+
+            int count = await _personServices.UploadPersonsFromExcelFile(excelFile);
+
+            ViewBag.Message = $"{count} Person Uploaded";
+            return View();
+        }
     }
 }

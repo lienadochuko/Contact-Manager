@@ -2,6 +2,7 @@
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace ServiceContracts
 {
@@ -79,5 +80,12 @@ namespace ServiceContracts
         /// </summary>
         /// <returns>REturns the memory stream as Excel Data of persons</returns>
         Task<MemoryStream> GetPersonExcel();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <returns></returns>
+        Task<int> UploadPersonsFromExcelFile(IFormFile formFile);
     }
 }

@@ -36,7 +36,7 @@ namespace Repository_s_
 
         public async Task<List<Person>> GetAllPerson()
         {
-            List<Person> persons = await _db.Persons.Include("Country").ToListAsync();
+            List<Person> persons = await _db.Persons.Include("country").ToListAsync();
 
             return persons;
         }
@@ -44,14 +44,21 @@ namespace Repository_s_
         public async Task<List<Person>> GetFilteredPersons(Expression<Func<Person, bool>> predicate)
         {
             List<Person> persons = await _db.Persons.Where(predicate).
-                Include("Country").ToListAsync();
+                Include("country").ToListAsync();
 
             return persons;
         }
 
         public async Task<Person?> GetPersonByPersonID(Guid? personID)
         {
-           Person? person = await _db.Persons.Include("Country").FirstOrDefaultAsync(temp => temp.PersonID == personID);
+           Person? person = await _db.Persons.Include("country").FirstOrDefaultAsync(temp => temp.PersonID == personID);
+
+            return person;
+        }
+
+        public async Task<Person> GetPersonByPersonName(string? personName)
+        {
+            Person person = await _db.Persons.Include("country").FirstOrDefaultAsync(temp => temp.PersonName == personName);
 
             return person;
         }

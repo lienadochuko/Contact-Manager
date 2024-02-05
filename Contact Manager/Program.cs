@@ -22,6 +22,7 @@ builder.Host.ConfigureLogging(logging =>
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonsRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>
     (
