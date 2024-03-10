@@ -29,15 +29,13 @@ namespace Services
         private readonly ICountriesService _countriesService;
         //private readonly ILogger<PersonService> _logger;
 
-        public PersonService(IPersonRepository personRepository, 
-            ICountriesService countriesService,
+        public PersonService(IPersonRepository personRepository,
             ICountriesRepository countriesRepository)
         {
             //_persons = new List<Person>();
             //ILogger<PersonService> logger
 
             _personRepository = personRepository;
-            _countriesService = countriesService;
             _countriesRepository = countriesRepository;
             //_logger = logger;
         }
@@ -188,7 +186,7 @@ namespace Services
         public async Task<PersonResponse> UpdatePerson(PersonUpdateRequest? personUpdateRequest)
         {
             if (personUpdateRequest == null)
-                throw new ArgumentNullException(nameof(Person));
+                throw new ArgumentNullException(nameof(personUpdateRequest));
 
             //validation
             ValidationHelper.ModelValidation(personUpdateRequest);

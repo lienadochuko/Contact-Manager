@@ -20,6 +20,7 @@ namespace TestProject1
         //private fields
         private readonly IPersonServices _personService;
         public readonly Mock<IPersonRepository> _personRepositoryMock;
+        public readonly Mock<ICountriesRepository> _countryRepositoryMock;
         public readonly IPersonRepository _personRepository;
         public readonly ICountriesRepository _countriesRepository;
         private readonly ICountriesService _countriesService;
@@ -30,15 +31,20 @@ namespace TestProject1
 
         public PersonServiceTest(ITestOutputHelper testOutputHelper)
         {
-            var countriesInitialData = new List<Country>() { };
             _personRepositoryMock = new Mock<IPersonRepository>();
+            _personRepository = _personRepositoryMock.Object;
+
+            _countryRepositoryMock = new Mock<ICountriesRepository>();
+            _countriesRepository = _countryRepositoryMock.Object;
+
+            var countriesInitialData = new List<Country>() { };
 
             DbContextMock<ApplicationDbContext> dbContextMock = new DbContextMock<ApplicationDbContext>(new DbContextOptionsBuilder<ApplicationDbContext>().Options);
 
             ApplicationDbContext dbContext = dbContextMock.Object;
             dbContextMock.CreateDbSetMock(temp => temp.Countries, countriesInitialData);
 
-            _countriesService = new CountriesService(dbContext);
+            _countriesService = new CountriesService(null);
 
 
             var personsInitialData = new List<Person>() { };
@@ -48,7 +54,7 @@ namespace TestProject1
             ApplicationDbContext dbContextPerson = dbContextMockPerson.Object;
             dbContextMockPerson.CreateDbSetMock(temp => temp.Persons, personsInitialData);
 
-            _personService = new PersonService(dbContextPerson, _countriesService);
+            _personService = new PersonService(_personRepository, _countriesRepository);
 
             _testOutputHelper = testOutputHelper;
             _fixture = new Fixture();
@@ -236,7 +242,7 @@ namespace TestProject1
         //PersonResponse, which should
         //include the newly generated personID
         [Fact]
-        public async Task AddPerson_FullPersonDetails_ToBeSucces ull()
+        public async Task AddPerson_FullPersonDetails_ToBeSuccesull()
         {
             //PersonAddRequest? personAddRequest = _fixture.Create<PersonAddRequest>();
 
@@ -252,6 +258,10 @@ namespace TestProject1
             //    DOB = DateTime.Parse("2003-03-03"),
             //    RecieveNewsLetter = true,
             //};
+
+            Person person = personAddRequest.ToPerson();
+
+            _personRepositoryMock.Setup(temp => temp.AddPerson(It.IsAny<Person>())).ReturnsAsync(person); 
 
             //Act
             PersonResponse person_response_from_add =
