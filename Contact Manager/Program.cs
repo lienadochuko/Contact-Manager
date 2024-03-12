@@ -5,24 +5,33 @@ using Entities;
 using Rotativa.AspNetCore;
 using RepositoryContract_s_;
 using Repository_s_;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
-//logging
-builder.Host.ConfigureLogging(logging =>
+//Serilog
+builder.Host.UseSerilog((HostBuilderContext context,
+    IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
 {
-    logging.ClearProviders();
-    logging.AddConsole();
-    logging.AddDebug();
-    logging.AddEventLog();
+    loggerConfiguration
+    .ReadFrom.Configuration(context.Configuration) //read configuration settings from built-in IConfiguration
+    .ReadFrom.Services(services); //read out current app's services and make them available to serilog
 });
+
 
 //add services into IoC container
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonsRepository>();
+
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = 
+    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
+    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestPropertiesAndHeaders;
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>
     (
@@ -42,11 +51,8 @@ if (builder.Environment.IsDevelopment())
 Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
 //Rotativa.AspNetCore.RotativaConfiguration.Setup(builder.Environment.WebRootPath, "Rotativa");
 //RotativaConfiguration.Setup(builder.Environment.WebRootPath, "Rotativa");
-//app.Logger.LogDebug("Debug Message");
-//app.Logger.LogInformation("Information Message");
-//app.Logger.LogWarning("Warning Message");
-//app.Logger.LogError("Error Message");
-//app.Logger.LogCritical("Critical Message");1
+
+app.UseHttpLogging();
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();

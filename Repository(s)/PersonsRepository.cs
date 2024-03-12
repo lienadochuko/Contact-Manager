@@ -15,7 +15,7 @@ namespace Repository_s_
         private readonly ApplicationDbContext _db;
 
         public PersonsRepository(ApplicationDbContext db)
-        {
+        { 
             _db = db;
         }
         public async Task<Person> AddPerson(Person person)
