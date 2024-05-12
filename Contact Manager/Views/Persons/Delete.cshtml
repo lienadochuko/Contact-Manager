@@ -41,8 +41,8 @@
                 <div class="w-25">
                 </div>
                 <div class="flex-1 flex">
-                    <button class="button button-red-back">Delete</button>
-                    <a asp-controller="Persons" asp-action="Index" class="link-hover">Back to Person List</a>
+                    <button class="button button-red-back" style="margin-right: 10px;">Delete</button>
+                    <a asp-controller="Persons" asp-action="Index" class="button-link button-blue-back">Back to Person List</a>
                 </div>
                 <div asp-validation-summary="All" class="text-red"></div>
                 @if (ViewBag.Errors != null)

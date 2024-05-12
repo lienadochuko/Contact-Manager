@@ -12,14 +12,51 @@ namespace Contact_Manager.Filters.ActionFilters
         public void OnActionExecuted(ActionExecutedContext context)
         {
             //To Do: add after logic here
-            Logger.LogInformation("{FilterName}.{MethodName} method", nameof(PersonsListActionFilter), nameof(OnActionExecuted));
+            Logger.LogInformation("{FilterName}.{MethodName} method", 
+                nameof(PersonsListActionFilter), nameof(OnActionExecuted));
 
             PersonsController personsController = (PersonsController) context.Controller;
+
+            IDictionary<string, object?>? parameters = 
+               (IDictionary<string, object?>) context.HttpContext.Items["arguments"];
             
+
+            if(parameters != null)
+            {
+                if(parameters.ContainsKey("searchBy"))
+                {
+                   personsController.ViewData["CurrentSearchBy"] = Convert.ToString(parameters["searchBy"]);
+                }
+
+                if (parameters.ContainsKey("searchString"))
+                {
+                    personsController.ViewData["CurrentSearchString"] = Convert.ToString(parameters["searchString"]);
+                }
+                if (parameters.ContainsKey("sortBy"))
+                {
+                    personsController.ViewData["CurrentSortBy"] = Convert.ToString(parameters["sortBy"]);
+                }
+                if (parameters.ContainsKey("sortOrderOptions"))
+                {
+                    personsController.ViewData["CurrentSortOrderOptions"] = Convert.ToString(parameters["sortBy"]);
+                }
+            }
+
+            //Searching
+            personsController.ViewBag.SearchFields = new Dictionary<string, string>()
+            {
+                {nameof(PersonResponse.PersonName), "Person Name"},
+                {nameof(PersonResponse.Email), "Email"},
+                {nameof(PersonResponse.DOB), "Date of Birth"},
+                {nameof(PersonResponse.Gender), "Gender"},
+                {nameof(PersonResponse.Address), "Address"},
+                {nameof(PersonResponse.CountryID), "Country"}
+            };
         } 
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
+            context.HttpContext.Items["arguments"] = context.ActionArguments;
             //To Do: add before logic here
             Logger.LogInformation("PersonListActionFilter.OnActionExecuting method");
 

@@ -9,6 +9,7 @@ using ServiceContracts.Enums;
 namespace Contact_Manager.Controllers
 {
     [Route("[controller]")]
+    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-From-Controller-Key", "My-From-Controller-Value", 1 })]
     public class PersonsController : Controller
     {
         //private fields
@@ -30,6 +31,7 @@ namespace Contact_Manager.Controllers
         //Url: persons/
         [Route("/")]
         [TypeFilter(typeof(PersonsListActionFilter))]
+        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Action-Key", "My-Action-Value", 2 })]
         public async Task<IActionResult> Index(string searchBy, string? searchString, 
             string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrderOptions = SortOrderOptions.ASC)
         {
@@ -37,30 +39,22 @@ namespace Contact_Manager.Controllers
             _logger.LogDebug($"searhBy: {searchBy}, searchString: {searchString}, " +
                 $"sortBy: {sortBy}, sortOrderOptions: {sortOrderOptions}");
 
-            //Searching
-            ViewBag.SearchFields = new Dictionary<string, string>()
-            {
-                {nameof(PersonResponse.PersonName), "Person Name"},
-                {nameof(PersonResponse.Email), "Email"},
-                {nameof(PersonResponse.DOB), "Date of Birth"},
-                {nameof(PersonResponse.Gender), "Gender"},
-                {nameof(PersonResponse.Address), "Address"},
-                {nameof(PersonResponse.CountryID), "Country"}
-            };
+            
             List<PersonResponse> persons = await _personServices.GetFilteredPersons(searchBy, searchString);
-            ViewBag.CurrentSearchBy = searchBy;
-            ViewBag.CurrentSearchString = searchString;
+            //ViewBag.CurrentSearchBy = searchBy;
+            //ViewBag.CurrentSearchString = searchString;
 
             //Sort
             List<PersonResponse> sortedPerson = await _personServices.GetSortedPersons(persons, sortBy, sortOrderOptions);
-            ViewBag.CurrentSortBy = sortBy.ToString();
-            ViewBag.CurrentSortOrderOptions = sortOrderOptions.ToString();
+            //ViewBag.CurrentSortBy = sortBy.ToString();
+            //ViewBag.CurrentSortOrderOptions = sortOrderOptions.ToString();
             return View(sortedPerson);
         }
 
         //Url: persons/create
         [Route("[action]")]
         [HttpGet] //indicates that the action recieves only get requests
+        //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Key", "X-Value" })]
         public async Task<IActionResult> Create()
         {
             List<CountryResponse> countries = await _countriesService.GetAllCountries();

@@ -1,14 +1,19 @@
 using ServiceContracts;
-using Services;
+using Services; 
 using Microsoft.EntityFrameworkCore;
 using Entities;
 using Rotativa.AspNetCore;
 using RepositoryContract_s_;
 using Repository_s_;
 using Serilog;
+using Contact_Manager.Filters.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options => {
+    var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
+
+    options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global", 3));
+});
 
 //Serilog
 builder.Host.UseSerilog((HostBuilderContext context,
