@@ -9,12 +9,6 @@ using Serilog;
 using Contact_Manager.Filters.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews(options => {
-    var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
-
-    options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global", 3));
-});
-
 //Serilog
 builder.Host.UseSerilog((HostBuilderContext context,
     IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
@@ -24,6 +18,11 @@ builder.Host.UseSerilog((HostBuilderContext context,
     .ReadFrom.Services(services); //read out current app's services and make them available to serilog
 });
 
+builder.Services.AddControllersWithViews(options => {
+    var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
+
+    options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global", 3));
+});
 
 //add services into IoC container
 builder.Services.AddScoped<ICountriesService, CountriesService>();
@@ -31,12 +30,6 @@ builder.Services.AddScoped<IPersonServices, PersonService>();
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonsRepository>();
 
-builder.Services.AddHttpLogging(options =>
-{
-    options.LoggingFields = 
-    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
-    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestPropertiesAndHeaders;
-});
 
 builder.Services.AddDbContext<ApplicationDbContext>
     (
@@ -45,6 +38,13 @@ builder.Services.AddDbContext<ApplicationDbContext>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     }
 );
+
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = 
+    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
+    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestPropertiesAndHeaders;
+});
 
 var app = builder.Build();
 

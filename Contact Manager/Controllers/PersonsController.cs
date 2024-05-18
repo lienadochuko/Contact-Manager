@@ -1,6 +1,9 @@
 ﻿using Contact_Manager.Filters.ActionFilters;
+using Contact_Manager.Filters.ResourceFilters;
+using Contact_Manager.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml.Style;
 using Rotativa.AspNetCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -32,6 +35,7 @@ namespace Contact_Manager.Controllers
         [Route("/")]
         [TypeFilter(typeof(PersonsListActionFilter))]
         [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Action-Key", "My-Action-Value", 2 })]
+        [TypeFilter(typeof(PersonsListResultFilter))]
         public async Task<IActionResult> Index(string searchBy, string? searchString, 
             string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrderOptions = SortOrderOptions.ASC)
         {
@@ -54,7 +58,7 @@ namespace Contact_Manager.Controllers
         //Url: persons/create
         [Route("[action]")]
         [HttpGet] //indicates that the action recieves only get requests
-        //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Key", "X-Value" })]
+        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Key", "X-Value", 5 })]
         public async Task<IActionResult> Create()
         {
             List<CountryResponse> countries = await _countriesService.GetAllCountries();
@@ -71,20 +75,27 @@ namespace Contact_Manager.Controllers
         //Url: persons/create
         [Route("[action]")]
         [HttpPost] //indicates that the action recieves only post requests
-        public async Task<IActionResult> Create(PersonAddRequest personAddRequest)
+        [TypeFilter(typeof(PersonCreateandEditPostActionFilter))]
+        [TypeFilter(typeof(FeatureDisableldResourceFilter), Arguments = new object[] {false})]
+        public async Task<IActionResult> Create(PersonAddRequest personRequest)
         {
-            if (!ModelState.IsValid)
-            {
-                List<CountryResponse> countries = await _countriesService.GetAllCountries();
-                ViewBag.Countries = countries;
+            //if (!ModelState.IsValid)
+            //{
+            //    List<CountryResponse> countries = await _countriesService.GetAllCountries();
+            //    ViewBag.Countries = countries.Select(temp =>
+            //    new SelectListItem()
+            //    {
+            //        Text = temp.CountryName,
+            //        Value = temp.CountryID.ToString(),
+            //    });
 
-                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            //    ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
 
-                return View(countries);
-            }
+            //    return View(personRequest);
+            //}
 
             //call the service method
-            PersonResponse personResponse = await _personServices.AddPerson(personAddRequest);
+            PersonResponse personResponse = await _personServices.AddPerson(personRequest);
 
             //navigate to Index() action method (it make another get request to "persons/index")
             return RedirectToAction("Index", "Persons");
@@ -116,28 +127,29 @@ namespace Contact_Manager.Controllers
 
         [HttpPost]
         [Route("[action]/{personID}")]
-        public async Task<IActionResult> Edit(PersonUpdateRequest personUpdateRequest)
+        [TypeFilter(typeof(PersonCreateandEditPostActionFilter))]
+        public async Task<IActionResult> Edit(PersonUpdateRequest personRequest)
         {
-            PersonResponse? personResponse = await _personServices.GetPersonByPersonID(personUpdateRequest.PersonID);
+            PersonResponse? personResponse = await _personServices.GetPersonByPersonID(personRequest.PersonID);
 
             if (personResponse == null)
             {
                 return RedirectToAction("Index", "Persons");
             }
 
-            if (ModelState.IsValid)
-            {
-                PersonResponse updatedPerson = await _personServices.UpdatePerson(personUpdateRequest);
+            //if (ModelState.IsValid)
+            //{
+                await _personServices.UpdatePerson(personRequest);
                 return RedirectToAction("Index", "Persons");
-            }
-            else
-            {
-                List<CountryResponse> countries = await _countriesService.GetAllCountries();
-                ViewBag.Countries = countries;
+            //}
+            //else
+            //{
+            //    List<CountryResponse> countries = await _countriesService.GetAllCountries();
+            //    ViewBag.Countries = countries;
 
-                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                return View();
-            }
+            //    ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            //    return View();
+            //}
         }
 
 
