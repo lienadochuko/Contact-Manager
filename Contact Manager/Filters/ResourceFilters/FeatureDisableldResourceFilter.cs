@@ -22,8 +22,12 @@ namespace Contact_Manager.Filters.ResourceFilters
 			
 			if(_isDisabled)
 			{
-				context.Result = new NotFoundResult();
-			}else
+				//context.Result = new NotFoundResult();
+
+				context.Result = new StatusCodeResult(501); //Not Implemented
+
+			}
+			else
 			{
 			await next();
 			}

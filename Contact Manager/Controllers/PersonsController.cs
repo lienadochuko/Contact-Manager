@@ -1,4 +1,5 @@
 ﻿using Contact_Manager.Filters.ActionFilters;
+using Contact_Manager.Filters.Authorization_Filter;
 using Contact_Manager.Filters.ResourceFilters;
 using Contact_Manager.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,7 @@ namespace Contact_Manager.Controllers
         [Route("[action]")]
         [HttpPost] //indicates that the action recieves only post requests
         [TypeFilter(typeof(PersonCreateandEditPostActionFilter))]
+        [TypeFilter(typeof(TokenAuthorizationFilter))]
         [TypeFilter(typeof(FeatureDisableldResourceFilter), Arguments = new object[] {false})]
         public async Task<IActionResult> Create(PersonAddRequest personRequest)
         {
