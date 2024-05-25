@@ -1,9 +1,11 @@
 ﻿using Contact_Manager.Filters.ActionFilters;
 using Contact_Manager.Filters.Authorization_Filter;
+using Contact_Manager.Filters.ExceptionFilters;
 using Contact_Manager.Filters.ResourceFilters;
 using Contact_Manager.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.Style;
 using Rotativa.AspNetCore;
 using ServiceContracts;
@@ -14,6 +16,7 @@ namespace Contact_Manager.Controllers
 {
     [Route("[controller]")]
     [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-From-Controller-Key", "My-From-Controller-Value", 1 })]
+    [TypeFilter(typeof(HandleExceptionFilter))]
     public class PersonsController : Controller
     {
         //private fields
@@ -59,6 +62,7 @@ namespace Contact_Manager.Controllers
         //Url: persons/create
         [Route("[action]")]
         [HttpGet] //indicates that the action recieves only get requests
+        [TypeFilter(typeof(TokenResultFilter))]
         [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Key", "X-Value", 5 })]
         public async Task<IActionResult> Create()
         {
