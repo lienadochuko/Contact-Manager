@@ -1,4 +1,6 @@
-﻿using Contact_Manager.Filters.ActionFilters;
+﻿using Contact_Manager.Filters;
+using Contact_Manager.Filters.ActionFilters;
+using Contact_Manager.Filters.AlwaysRunResultFilter;
 using Contact_Manager.Filters.Authorization_Filter;
 using Contact_Manager.Filters.ExceptionFilters;
 using Contact_Manager.Filters.ResourceFilters;
@@ -16,16 +18,17 @@ namespace Contact_Manager.Controllers
 {
     [Route("[controller]")]
     [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-From-Controller-Key", "My-From-Controller-Value", 1 })]
+    [TypeFilter(typeof(PersonsAlwaysRunResultFilter))]
     [TypeFilter(typeof(HandleExceptionFilter))]
-    public class PersonsController : Controller
+	public class PersonsController : Controller
     {
         //private fields
         private readonly IPersonServices _personServices;
         private readonly ICountriesService _countriesService;
         private readonly ILogger<PersonsController> _logger;
 
-        //contructor
-        public PersonsController(IPersonServices personServices, ICountriesService countriesService, ILogger<PersonsController> logger)
+	//contructor
+	public PersonsController(IPersonServices personServices, ICountriesService countriesService, ILogger<PersonsController> logger)
         {
             _personServices = personServices;
             _countriesService = countriesService;
@@ -38,8 +41,8 @@ namespace Contact_Manager.Controllers
         //Url: persons/
         [Route("/")]
         [TypeFilter(typeof(PersonsListActionFilter))]
-        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Action-Key", "My-Action-Value", 2 })]
         [TypeFilter(typeof(PersonsListResultFilter))]
+        [SkipFilter]
         public async Task<IActionResult> Index(string searchBy, string? searchString, 
             string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrderOptions = SortOrderOptions.ASC)
         {
@@ -64,6 +67,7 @@ namespace Contact_Manager.Controllers
         [HttpGet] //indicates that the action recieves only get requests
         [TypeFilter(typeof(TokenResultFilter))]
         [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Key", "X-Value", 5 })]
+        [AttributeHeaderActionFilter( "X-Key", "X-Value", 5 )]
         public async Task<IActionResult> Create()
         {
             List<CountryResponse> countries = await _countriesService.GetAllCountries();
