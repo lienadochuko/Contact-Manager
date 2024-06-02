@@ -1,33 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OfficeOpenXml.Style;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace Contact_Manager.Filters.ActionFilters
 {
-    public class ResponseHeaderActionFilter : IAsyncActionFilter, IOrderedFilter
-    {
-        private readonly ILogger<ResponseHeaderActionFilter> _logger;
-        private readonly string _key;
-        private readonly string _value;
 
-        public int Order { get; set; }
+	public class ResponseHeaderFilterFactoryAttribute : Attribute, IFilterFactory
+	{
+		public bool IsReusable => false;
+		private string _key { get; set; }
+		private string _value { get; set; }
 
-        public ResponseHeaderActionFilter(ILogger<ResponseHeaderActionFilter> logger, string key, string value, int order)
-        {
-            _logger = logger;
-            _key = key;
-            _value = value;
-            Order = order;
-        }
+		private int Order { get; set; }
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
-        {
-            //before
-            _logger.LogInformation("{FilterName}.{MethodName} method -before", nameof(ResponseHeaderActionFilter), nameof(OnActionExecutionAsync));
 
-            await next();//calls the subsequent filter or action method
+		public ResponseHeaderFilterFactoryAttribute( string key, string value, int order)
+		{
+			_key = key;
+			_value = value;
+			Order = order;
+		}
 
-            //after
-            _logger.LogInformation("{FilterName}.{MethodName} method -After", nameof(ResponseHeaderActionFilter), nameof(OnActionExecutionAsync));
-            context.HttpContext.Response.Headers[_key] = _value;
-        }
-    }
+		//Controller -> FilterFactory -> Filter
+		public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
+		{
+			return new ResponseHeaderActionFilter(_key, _value, Order);
+		}
+	}
+	public class ResponseHeaderActionFilter : IAsyncActionFilter, IOrderedFilter
+	{
+		private readonly string _key;
+		private readonly string _value;
+
+		public int Order { get; set; }
+
+		public ResponseHeaderActionFilter(string key, string value, int order)
+		{
+			_key = key;
+			_value = value;
+			Order = order;
+		}
+
+		public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+		{
+			//before
+
+			await next();//calls the subsequent filter or action method
+
+			//after
+			context.HttpContext.Response.Headers[_key] = _value;
+		}
+	}
 }

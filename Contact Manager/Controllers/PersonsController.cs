@@ -17,7 +17,7 @@ using ServiceContracts.Enums;
 namespace Contact_Manager.Controllers
 {
     [Route("[controller]")]
-    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-From-Controller-Key", "My-From-Controller-Value", 1 })]
+    //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-From-Controller-Key", "My-From-Controller-Value", 1 })]
     [TypeFilter(typeof(PersonsAlwaysRunResultFilter))]
     [TypeFilter(typeof(HandleExceptionFilter))]
 	public class PersonsController : Controller
@@ -33,7 +33,7 @@ namespace Contact_Manager.Controllers
             _personServices = personServices;
             _countriesService = countriesService;
             _logger = logger;
-        }
+        } 
 
 
         //Url: persons/index
@@ -66,8 +66,9 @@ namespace Contact_Manager.Controllers
         [Route("[action]")]
         [HttpGet] //indicates that the action recieves only get requests
         [TypeFilter(typeof(TokenResultFilter))]
-        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Key", "X-Value", 5 })]
-        [AttributeHeaderActionFilter( "X-Key", "X-Value", 5 )]
+        //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "X-Key", "X-Value", 5 })]
+        //[AttributeHeaderActionFilter( "X-Key", "X-Value", 5 )]
+        //[ResponseHeaderFilterFactory( "X-Key", "X-Value", 5 )]
         public async Task<IActionResult> Create()
         {
             List<CountryResponse> countries = await _countriesService.GetAllCountries();

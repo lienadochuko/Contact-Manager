@@ -27,10 +27,6 @@ namespace Contact_Manager.Filters.ExceptionFilters
 					StatusCode = StatusCodes.Status500InternalServerError
 				};
 			}
-			else
-			{
-				context.Result = new StatusCodeResult(StatusCodes.Status500InternalServerError);
-			}	
 		}
 	}
 }

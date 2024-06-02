@@ -2,8 +2,24 @@
     ViewBag.Title = "Upload Persons from Excel";
 }
 
-<h2>Upload Persons from Excel</h2>
-<div>
+
+<!-- breadCrumb start -->
+<div class="flex">
+    <div class="flex-1">
+        <div class="text-grey">
+            <span>Contacts</span>
+            <i class="fa-solid fa-caret-right"></i>
+            <span class="text-grey">Persons</span>
+            <i class="fa-solid fa-caret-right"></i>
+            <span class="text-grey">Edit</span>
+        </div>
+    </div>
+
+</div>
+<!-- breadCrumb ends -->
+
+<div class="form-container">
+<h2 class="text-large">Upload Persons from Excel</h2>
     <form asp-controller="Persons" asp-action="UploadExcel" method="post" enctype="multipart/form-data">
         @*ExcelFile*@
         <div class="form-field flex">
@@ -21,6 +37,7 @@
             <div class="w-25">
                 <div class="flex-1">
                     <button type="submit" class="button button-green-back">Upload</button>
+                    <a asp-controller="Persons" asp-action="Index" class="button-link button-blue-back">Back to Person List</a>
                 </div>
             </div>
         </div>
