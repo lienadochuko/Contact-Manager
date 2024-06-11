@@ -33,8 +33,9 @@ namespace Contact_Manager.Middleware
 					_logger.LogError("{ExceptionType} {ExceptionMessage}", ex.GetType().ToString(), ex.Message);
 				}
 
-				httpContext.Response.StatusCode = 500;
-				await httpContext.Response.WriteAsync("Internal Server Error");
+				//httpContext.Response.StatusCode = 500;
+				//await httpContext.Response.WriteAsync("Internal Server Error");
+				throw;
 			}
 		}
 	}

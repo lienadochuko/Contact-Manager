@@ -18,7 +18,7 @@ namespace TestProject1
     public class PersonServiceTest
     {
         //private fields
-        private readonly IPersonServices _personService;
+        private readonly IPersonGetterServices _personService;
         public readonly Mock<IPersonRepository> _personRepositoryMock;
         public readonly Mock<ICountriesRepository> _countryRepositoryMock;
         public readonly IPersonRepository _personRepository;
