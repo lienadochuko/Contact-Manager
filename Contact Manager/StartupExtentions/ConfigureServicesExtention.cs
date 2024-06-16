@@ -22,7 +22,8 @@ namespace Contact_Manager
 
 			//add services into IoC container
 			services.AddScoped<ICountriesService, CountriesService>();
-			services.AddScoped<IPersonGetterServices, PersonGetterService>();
+			services.AddScoped<IPersonGetterServices, PersonsGetterServiceWithFewExcelFields>();
+			services.AddScoped<PersonGetterService, PersonGetterService>();
 			services.AddScoped<IPersonAdderServices, PersonAdderService>();
 			services.AddScoped<IPersonDeleterServices, PersonDeleterService>();
 			services.AddScoped<IPersonUpdaterServices, PersonUpdaterService>();
